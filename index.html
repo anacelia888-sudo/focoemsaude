@@ -923,16 +923,23 @@ tfoot td { padding: 11px 14px; }
 
   <div class="config-card">
     <h3>Metricas Financeiras</h3>
-    <div style="margin-top:16px;">
+    <p style="font-size:12px;color:var(--cinza-texto);margin:8px 0 16px;">Receita e Break-even sao calculados automaticamente pelo Financeiro. Edite la para alterar.</p>
+    <div style="margin-top:8px;">
       <div class="form-row">
-        <div class="form-group"><label>Receita Anual Projetada (R$)</label><input type="number" id="cfg-receita" /></div>
+        <div class="form-group">
+          <label>Receita Anual Projetada</label>
+          <div id="cfg-receita-display" style="padding:10px 12px;background:var(--cinza-medio);border-radius:6px;font-weight:600;color:var(--azul);font-size:14px;">—</div>
+        </div>
         <div class="form-group"><label>Investimento Inicial (R$)</label><input type="number" id="cfg-investimento" /></div>
       </div>
       <div class="form-row">
-        <div class="form-group"><label>Break-even (mes numero)</label><input type="number" id="cfg-breakeven" /></div>
+        <div class="form-group">
+          <label>Break-even</label>
+          <div id="cfg-breakeven-display" style="padding:10px 12px;background:var(--cinza-medio);border-radius:6px;font-weight:600;color:var(--azul);font-size:14px;">—</div>
+        </div>
         <div class="form-group"><label>Total de Cotas Disponiveis</label><input type="number" id="cfg-cotas" /></div>
       </div>
-      <button class="btn btn-primary" onclick="salvarMetricas()">Salvar Metricas</button>
+      <button class="btn btn-primary" onclick="salvarMetricasEditaveis()">Salvar Investimento e Cotas</button>
     </div>
   </div>
 
@@ -1358,9 +1365,9 @@ function renderDashboard() {
   const cfg = state.config;
 
   document.getElementById('dash-metricas').innerHTML = `
-    <div class="card card-metric"><div class="label">Receita Projetada Ano 1</div><div class="value">${fmtMoeda(m.receitaAnual)}</div><div class="sub">80% de ocupacao</div></div>
-    <div class="card card-metric"><div class="label">Investimento Fases 1+2</div><div class="value">${fmtMoeda(m.investimento)}</div><div class="sub">Estruturacao + Pre-producao</div></div>
-    <div class="card card-metric"><div class="label">Break-even</div><div class="value">Mes ${m.breakeven}</div><div class="sub">60% de ocupacao minima</div></div>
+    <div class="card card-metric"><div class="label">Receita Projetada Ano 1</div><div class="value">${formatReais(m.receitaAnual)}</div><div class="sub">Calculado pelo Financeiro</div></div>
+    <div class="card card-metric"><div class="label">Investimento Fases 1+2</div><div class="value">${formatReais(m.investimento)}</div><div class="sub">Estruturacao + Pre-producao</div></div>
+    <div class="card card-metric"><div class="label">Break-even</div><div class="value">Mes ${m.breakeven||'—'}</div><div class="sub">Calculado pelo Financeiro</div></div>
     <div class="card card-metric"><div class="label">Cotas Disponiveis</div><div class="value">${m.cotasDisponiveis} cotas</div><div class="sub">Master + Apoio + Participacao</div></div>
   `;
 
@@ -1924,9 +1931,11 @@ function renderConfig() {
   document.getElementById('cfg-canal').value = cfg.canal;
   document.getElementById('cfg-fase').value = cfg.faseAtual;
   document.getElementById('cfg-progresso').value = cfg.progressoFase;
-  document.getElementById('cfg-receita').value = m.receitaAnual;
+  const dispR = document.getElementById('cfg-receita-display');
+  if (dispR) dispR.textContent = formatReais(m.receitaAnual);
   document.getElementById('cfg-investimento').value = m.investimento;
-  document.getElementById('cfg-breakeven').value = m.breakeven;
+  const dispB = document.getElementById('cfg-breakeven-display');
+  if (dispB) dispB.textContent = m.breakeven ? 'Mes ' + m.breakeven : '—';
   document.getElementById('cfg-cotas').value = m.cotasDisponiveis;
 }
 
@@ -1939,16 +1948,12 @@ function salvarConfig() {
   showToast('Configuracoes salvas!');
 }
 
-function salvarMetricas() {
-  state.metricas.receitaAnual = Number(document.getElementById('cfg-receita').value);
+function salvarMetricasEditaveis() {
   state.metricas.investimento = Number(document.getElementById('cfg-investimento').value);
-  state.metricas.breakeven = Number(document.getElementById('cfg-breakeven').value);
   state.metricas.cotasDisponiveis = Number(document.getElementById('cfg-cotas').value);
   saveState('metricas');
-  renderFinanceiro();
   renderDashboard();
-  renderKPIs();
-  showToast('Metricas salvas! Todos os paineis atualizados.');
+  showToast('Investimento e Cotas salvos!');
 }
 
 function confirmarReset() {
@@ -2247,8 +2252,33 @@ function saveFinanceiro() {
   });
 
   saveState('financeiro');
+
+  // Propagar para metricas: receita total e break-even
+  const totalRec = state.financeiro.receitaFontes.reduce((s,r) => s + parseReais(r.valor), 0);
+  state.metricas.receitaAnual = totalRec;
+
+  // Break-even: primeiro mes do fluxo com saldo acumulado >= 0
+  let be = 0;
+  for (const row of state.financeiro.fluxo) {
+    const saldo = parseReais(row.saldo);
+    const mesNum = parseInt(row.mes);
+    if (saldo >= 0 && mesNum > 0) { be = mesNum; break; }
+  }
+  if (!be) {
+    // fallback: contar por posicao
+    for (let i = 0; i < state.financeiro.fluxo.length; i++) {
+      if (parseReais(state.financeiro.fluxo[i].saldo) >= 0) { be = i + 1; break; }
+    }
+  }
+  if (be > 0) state.metricas.breakeven = be;
+
+  saveState('metricas');
+  renderDashboard();
+  renderConfig();
+  calcTotaisFinanceiro();
+
   document.getElementById('btn-save-financeiro').style.display = 'none';
-  showToast('Financeiro salvo!');
+  showToast('Financeiro salvo! Dashboard e Configuracoes atualizados.');
 }
 
 function addFinRow(secao) {
