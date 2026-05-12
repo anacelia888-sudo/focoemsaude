@@ -2092,8 +2092,14 @@ function calcTotaisFinanceiro() {
   if (elCP) elCP.textContent = '100%';
 
   // Atualiza card de Resultado (card id=3)
-  const elRes = document.querySelector('[data-fin="cards"][data-id="3"][data-field="value"]');
-  if (elRes) elRes.value = resultado !== 0 ? formatReais(resultado) : '—';
+  // Atualiza cards travados em tempo real
+  const elCardRec = document.getElementById('fin-card-receita');
+  if (elCardRec) elCardRec.textContent = totalReceita > 0 ? formatReais(totalReceita) : '—';
+  const elCardRes = document.getElementById('fin-card-resultado');
+  if (elCardRes) {
+    elCardRes.textContent = formatReais(resultado);
+    elCardRes.style.color = resultado >= 0 ? 'var(--verde)' : '#C0392B';
+  }
 
   return { totalReceita, totalCusto, resultado };
 }
@@ -2102,22 +2108,41 @@ function renderFinanceiro() {
   const f = state.financeiro;
   const m = state.metricas;
 
-  // Cards: label/sub editaveis, value travado (vem de metricas)
-  const cardVals = [
-    formatReais(m.receitaAnual),
-    formatReais(m.investimento),
-    '—',
-    'Mes ' + m.breakeven
-  ];
-  document.getElementById('fin-cards').innerHTML = f.cards.map((c,i) => `
-    <div class="card card-metric" data-fin-card="${c.id}">
+  // Cards calculados (1=Receita, 3=Resultado, 4=Break-even): so exibem
+  // Card 2 (Investimento): editavel
+  const totalRec = f.receitaFontes.reduce((s,r) => s + parseReais(r.valor), 0);
+  const totalCus = f.custos.reduce((s,c) => s + parseReais(c.valor), 0);
+  const resultado = totalRec - totalCus;
+
+  const cardHTML = [
+    // Card 1 — Receita Ano 1 — TRAVADO
+    `<div class="card card-metric">
+      <div class="label">${f.cards[0]?.label||'RECEITA ANO 1'}</div>
+      <div class="value" id="fin-card-receita" style="color:var(--azul);">${formatReais(totalRec)}</div>
+      <div class="sub">Calculado pela tabela de receitas</div>
+    </div>`,
+    // Card 2 — Investimento — EDITAVEL
+    `<div class="card card-metric" data-fin-card="2">
       <div class="form-group" style="margin:0 0 6px;">
-        <input class="editable-cell" value="${c.label}" oninput="markFinDirty()" data-fin="cards" data-id="${c.id}" data-field="label" style="font-size:11px;font-weight:600;color:var(--cinza-texto);text-transform:uppercase;letter-spacing:0.5px;" />
+        <input class="editable-cell" value="${f.cards[1]?.label||'INVESTIMENTO'}" oninput="markFinDirty()" data-fin="cards" data-id="2" data-field="label" style="font-size:11px;font-weight:600;color:var(--cinza-texto);text-transform:uppercase;letter-spacing:0.5px;" />
       </div>
-      <input class="editable-cell calc-locked" value="${cardVals[i]||c.value}" readonly data-fin="cards" data-id="${c.id}" data-field="value" style="font-family:'Playfair Display',serif;font-size:24px;font-weight:700;cursor:not-allowed;${c.color ? 'color:'+c.color+';' : 'color:var(--azul);'}" title="Calculado automaticamente a partir das Configuracoes" />
-      <input class="editable-cell" value="${c.sub}" oninput="markFinDirty()" data-fin="cards" data-id="${c.id}" data-field="sub" style="font-size:12px;color:var(--cinza-texto);margin-top:4px;" />
-    </div>
-  `).join('');
+      <input class="editable-cell" value="${formatReais(m.investimento)}" oninput="markFinDirty()" data-fin="cards" data-id="2" data-field="value" style="font-family:'Playfair Display',serif;font-size:24px;font-weight:700;color:var(--azul);" />
+      <input class="editable-cell" value="${f.cards[1]?.sub||'Fases 1 e 2'}" oninput="markFinDirty()" data-fin="cards" data-id="2" data-field="sub" style="font-size:12px;color:var(--cinza-texto);margin-top:4px;" />
+    </div>`,
+    // Card 3 — Resultado — TRAVADO
+    `<div class="card card-metric">
+      <div class="label">${f.cards[2]?.label||'RESULTADO OP.'}</div>
+      <div class="value" id="fin-card-resultado" style="${resultado >= 0 ? 'color:var(--verde)' : 'color:#C0392B'};">${formatReais(resultado)}</div>
+      <div class="sub">Receita total menos custos</div>
+    </div>`,
+    // Card 4 — Break-even — TRAVADO
+    `<div class="card card-metric">
+      <div class="label">${f.cards[3]?.label||'BREAK-EVEN'}</div>
+      <div class="value" id="fin-card-breakeven" style="color:var(--azul);">Mes ${m.breakeven||'—'}</div>
+      <div class="sub">Calculado pelo fluxo de caixa</div>
+    </div>`
+  ];
+  document.getElementById('fin-cards').innerHTML = cardHTML.join('');
 
   // Grafico (so texto de rodape editavel)
   document.getElementById('fin-grafico-card').innerHTML = `
