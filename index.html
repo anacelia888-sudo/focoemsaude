@@ -1459,7 +1459,7 @@ function renderPipeline() {
         <div class="kanban-card" draggable="true" ondragstart="dragStart(event,${p.id})">
           <strong>${p.empresa}</strong>
           <span>${p.contato}</span>
-          <span class="k-valor">${p.cota} — ${fmtMoeda(p.valor)}/ano</span>
+          <span class="k-valor">${p.cota} — ${fmtMoeda(p.valor)}/ano${p.desconto > 0 ? ` <span style="font-size:10px;background:#fff3e0;color:#e65100;padding:1px 5px;border-radius:8px;">${p.desconto}% desc</span>` : ''}</span>
           ${p.followup ? `<span class="k-followup">Follow-up: ${p.followup}</span>` : ''}
           <div style="margin-top:6px;display:flex;gap:4px;">
             <button class="btn-icon btn-edit" onclick="openModalProspect(${p.id})">✏️</button>
@@ -1513,6 +1513,33 @@ function drop(e, novoEstagio) {
 // ═══════════════════════════════════════════
 // MODAL PROSPECT
 // ═══════════════════════════════════════════
+function parsePricingValor(valorStr) {
+  if (!valorStr) return 0;
+  const nums = valorStr.replace(/\./g, '').match(/\d+/);
+  return nums ? Number(nums[0]) : 0;
+}
+
+function autoFillValorPorCota(sel) {
+  const servico = sel.value;
+  const prItem = state.pricing.find(pr => pr.servico === servico);
+  const baseVal = prItem ? parsePricingValor(prItem.valor) : 0;
+  const baseEl = document.getElementById('f-valor-base');
+  const descEl = document.getElementById('f-desconto');
+  if (baseEl) { baseEl.value = baseVal; baseEl.dataset.base = baseVal; }
+  if (descEl) descEl.value = 0;
+  calcValorFinal();
+}
+
+function calcValorFinal() {
+  const base    = Number(document.getElementById('f-valor-base')?.value || 0);
+  const descPct = Number(document.getElementById('f-desconto')?.value || 0);
+  const final   = Math.round(base * (1 - descPct / 100));
+  const finalEl = document.getElementById('f-valor-final');
+  if (finalEl) finalEl.textContent = 'R$ ' + final.toLocaleString('pt-BR');
+  const hiddenEl = document.getElementById('f-valor-hidden');
+  if (hiddenEl) hiddenEl.value = final;
+}
+
 function openModalProspect(id) {
   const p = id ? state.pipeline.find(x => x.id === id) : null;
   const titulo = p ? 'Editar Prospect' : 'Adicionar Prospect';
@@ -1530,11 +1557,25 @@ function openModalProspect(id) {
     <div class="form-group"><label>Email</label><input type="email" id="f-email" value="${p ? p.email : ''}" /></div>
     <div class="form-row">
       <div class="form-group required"><label>Cota</label>
-        <select id="f-cota">
-          ${['Master','Apoio','Participacao','Merchandising'].map(o => `<option ${p && p.cota===o ? 'selected' : ''}>${o}</option>`).join('')}
+        <select id="f-cota" onchange="autoFillValorPorCota(this)">
+          ${state.pricing.map(pr => `<option value="${pr.servico}" ${p && p.cota===pr.servico ? 'selected' : ''}>${pr.servico}</option>`).join('')}
         </select>
       </div>
-      <div class="form-group required"><label>Valor Anual (R$)</label><input type="number" id="f-valor" value="${p ? p.valor : ''}" /><div class="error-msg" id="err-valor">Campo obrigatorio</div></div>
+      <div class="form-group">
+        <label>Valor Tabela (R$)</label>
+        <input type="number" id="f-valor-base" readonly style="background:var(--cinza-claro);color:var(--azul);font-weight:600;cursor:not-allowed;" value="0" data-base="0" />
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Desconto (%)</label>
+        <input type="number" id="f-desconto" min="0" max="100" value="${p ? (p.desconto || 0) : 0}" oninput="calcValorFinal()" placeholder="0" />
+      </div>
+      <div class="form-group">
+        <label>Valor com Desconto / Ano</label>
+        <div id="f-valor-final" style="padding:8px 12px;background:#e8f5e9;border:1px solid #a5d6a7;border-radius:6px;font-weight:700;color:#00695c;font-size:15px;">R$ 0</div>
+        <input type="hidden" id="f-valor-hidden" value="${p ? p.valor : 0}" />
+      </div>
     </div>
     <div class="form-row">
       <div class="form-group required"><label>Estagio</label>
@@ -1552,14 +1593,24 @@ function openModalProspect(id) {
     </div>
   `;
   abrirModal(html);
+  setTimeout(() => {
+    const cotaSel = document.getElementById('f-cota');
+    const descEl  = document.getElementById('f-desconto');
+    // Sempre busca da tabela de precos
+    if (cotaSel) autoFillValorPorCota(cotaSel);
+    // Restaura desconto salvo (apenas na edicao)
+    if (p && p.desconto && descEl) {
+      descEl.value = p.desconto;
+      calcValorFinal();
+    }
+  }, 30);
 }
 
 function salvarProspect(id) {
   const empresa = document.getElementById('f-empresa').value.trim();
   const contato = document.getElementById('f-contato').value.trim();
-  const valor   = document.getElementById('f-valor').value;
   let ok = true;
-  ['empresa','contato','valor'].forEach(f => {
+  ['empresa','contato'].forEach(f => {
     const v = document.getElementById('f-' + f).value.trim();
     if (!v) {
       document.getElementById('f-' + f).classList.add('field-error');
@@ -1572,9 +1623,16 @@ function salvarProspect(id) {
   });
   if (!ok) return;
 
+  const valorFinal = Number(document.getElementById('f-valor-hidden').value) || 0;
+  const valorBase  = Number(document.getElementById('f-valor-base').value) || 0;
+  const desconto   = Number(document.getElementById('f-desconto').value) || 0;
+
   const obj = {
     id: id || nextId(state.pipeline),
-    empresa, contato, valor: Number(valor),
+    empresa, contato,
+    valor: valorFinal,
+    valorBase,
+    desconto,
     segmento: document.getElementById('f-segmento').value.trim(),
     telefone: document.getElementById('f-telefone').value.trim(),
     email: document.getElementById('f-email').value.trim(),
