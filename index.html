@@ -371,6 +371,32 @@ tfoot td { padding: 11px 14px; }
   .sidebar { display: none; }
   .main { margin-left: 0; padding: 16px; max-width: 100vw; }
 }
+
+[contenteditable="true"] {
+  border-radius: 3px;
+  padding: 2px 4px;
+  transition: background 0.15s;
+  outline: none;
+  min-width: 20px;
+  display: inline-block;
+}
+[contenteditable="true"]:hover {
+  background: rgba(0,168,120,0.08);
+  cursor: text;
+}
+[contenteditable="true"]:focus {
+  background: #f0f7ff;
+  outline: 1px solid #1B4F72;
+}
+.secao-editavel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.lock-icon { font-size: 12px; color: var(--cinza-texto); margin-left: 6px; opacity: 0.6; }
 </style>
 </head>
 <body>
@@ -592,55 +618,47 @@ tfoot td { padding: 11px 14px; }
       <h1>Financeiro</h1>
       <p class="subtitle">Projecoes, orcamento e cenarios para o Ano 1</p>
     </div>
+    <button onclick="saveFinanceiro()" class="btn-save" id="btn-save-financeiro" style="display:none">&#128190; Salvar alteracoes</button>
   </div>
 
-  <div class="cards-grid">
-    <div class="card card-metric"><div class="label">Receita Total Ano 1</div><div class="value">R$ 1.220.000</div><div class="sub">Cenario realista (80% ocupacao)</div></div>
-    <div class="card card-metric"><div class="label">Custo Total Ano 1</div><div class="value" style="color:#C0392B;">R$ 780.000</div><div class="sub">Estrutura + Producao + Marketing</div></div>
-    <div class="card card-metric"><div class="label">Resultado Operacional</div><div class="value" style="color:var(--verde);">R$ 440.000</div><div class="sub">Margem de 36%</div></div>
-    <div class="card card-metric"><div class="label">Break-even</div><div class="value">Mes 7</div><div class="sub">60% de ocupacao minima</div></div>
-  </div>
+  <div class="cards-grid" id="fin-cards"></div>
 
-  <div class="card" style="margin-bottom:24px;">
-    <h3>Visao Financeira Ano 1</h3>
-    <div class="bar-chart">
-      <div class="bar-group"><div class="bar-value">R$ 1.220.000</div><div class="bar bar-receita"></div><div class="bar-label">Receita</div></div>
-      <div class="bar-group"><div class="bar-value">R$ 780.000</div><div class="bar bar-custo"></div><div class="bar-label">Custos</div></div>
-      <div class="bar-group"><div class="bar-value">R$ 440.000</div><div class="bar bar-result"></div><div class="bar-label">Resultado</div></div>
-    </div>
-    <p style="font-size:12px;color:var(--cinza-texto);margin-top:8px;">Investimento inicial: R$ 285.000 | Break-even: Mes 7</p>
-  </div>
+  <div class="card" style="margin-bottom:24px;" id="fin-grafico-card"></div>
 
   <div class="row-2">
     <div>
-      <h2>Receita por Fonte</h2>
+      <div class="section-header-row">
+        <h2 style="margin:0;">Receita por Fonte</h2>
+        <button onclick="addFinRow('receitaFontes')" class="btn-add" style="margin:0;padding:5px 10px;font-size:12px;">+ Linha</button>
+      </div>
       <div class="table-wrap">
         <table>
-          <thead><tr><th>Fonte</th><th>Valor Anual</th><th>%</th></tr></thead>
-          <tbody>
-            <tr><td>Cota Master</td><td>R$ 480.000</td><td>39%</td></tr>
-            <tr><td>Cotas de Apoio (3)</td><td>R$ 288.000</td><td>24%</td></tr>
-            <tr><td>Participacoes</td><td>R$ 300.000</td><td>25%</td></tr>
-            <tr><td>Merchandising</td><td>R$ 96.000</td><td>8%</td></tr>
-            <tr><td>Digital</td><td>R$ 56.000</td><td>4%</td></tr>
-          </tbody>
-          <tfoot><tr><td><strong>TOTAL</strong></td><td><strong>R$ 1.220.000</strong></td><td>100%</td></tr></tfoot>
+          <thead><tr><th>Fonte</th><th>Valor Anual</th><th>%</th><th style="width:32px;"></th></tr></thead>
+          <tbody id="fin-receita-tbody"></tbody>
+          <tfoot><tr>
+            <td><strong>TOTAL</strong></td>
+            <td><input class="editable-cell" id="fin-receita-total-valor" oninput="markFinDirty()" style="font-weight:600;" /></td>
+            <td><input class="editable-cell" id="fin-receita-total-pct" oninput="markFinDirty()" style="font-weight:600;" /></td>
+            <td></td>
+          </tr></tfoot>
         </table>
       </div>
     </div>
     <div>
-      <h2>Custos por Categoria</h2>
+      <div class="section-header-row">
+        <h2 style="margin:0;">Custos por Categoria</h2>
+        <button onclick="addFinRow('custos')" class="btn-add" style="margin:0;padding:5px 10px;font-size:12px;">+ Linha</button>
+      </div>
       <div class="table-wrap">
         <table>
-          <thead><tr><th>Item</th><th>Valor Anual</th><th>%</th></tr></thead>
-          <tbody>
-            <tr><td>Canal / Espaco TV</td><td>R$ 240.000</td><td>31%</td></tr>
-            <tr><td>Equipe Fixa</td><td>R$ 300.000</td><td>38%</td></tr>
-            <tr><td>Producao Semanal</td><td>R$ 156.000</td><td>20%</td></tr>
-            <tr><td>Marketing Digital</td><td>R$ 48.000</td><td>6%</td></tr>
-            <tr><td>Operacional + Adm.</td><td>R$ 36.000</td><td>5%</td></tr>
-          </tbody>
-          <tfoot><tr><td><strong>TOTAL</strong></td><td><strong>R$ 780.000</strong></td><td>100%</td></tr></tfoot>
+          <thead><tr><th>Item</th><th>Valor Anual</th><th>%</th><th style="width:32px;"></th></tr></thead>
+          <tbody id="fin-custos-tbody"></tbody>
+          <tfoot><tr>
+            <td><strong>TOTAL</strong></td>
+            <td><input class="editable-cell" id="fin-custos-total-valor" oninput="markFinDirty()" style="font-weight:600;" /></td>
+            <td><input class="editable-cell" id="fin-custos-total-pct" oninput="markFinDirty()" style="font-weight:600;" /></td>
+            <td></td>
+          </tr></tfoot>
         </table>
       </div>
     </div>
@@ -649,35 +667,20 @@ tfoot td { padding: 11px 14px; }
   <h2>Cenarios de Projecao</h2>
   <div class="table-wrap">
     <table>
-      <thead><tr><th>Cenario</th><th>Ocupacao</th><th>Receita</th><th>Custo</th><th>Resultado</th><th>Margem</th></tr></thead>
-      <tbody>
-        <tr><td><span class="badge badge-vermelho">Pessimista</span></td><td>60%</td><td>R$ 732.000</td><td>R$ 780.000</td><td style="color:#C0392B;"><strong>-R$ 48.000</strong></td><td>-6,6%</td></tr>
-        <tr><td><span class="badge badge-amarelo">Realista</span></td><td>80%</td><td>R$ 1.220.000</td><td>R$ 780.000</td><td style="color:var(--verde);"><strong>R$ 440.000</strong></td><td>36%</td></tr>
-        <tr><td><span class="badge badge-verde">Otimista</span></td><td>95%</td><td>R$ 1.450.000</td><td>R$ 780.000</td><td style="color:var(--verde);"><strong>R$ 670.000</strong></td><td>46%</td></tr>
-      </tbody>
+      <thead><tr><th>Cenario</th><th>Ocupacao</th><th>Receita</th><th>Custo</th><th>Resultado</th><th>Margem</th><th style="width:32px;"></th></tr></thead>
+      <tbody id="fin-cenarios-tbody"></tbody>
     </table>
   </div>
+  <button onclick="addFinRow('cenarios')" class="btn-add">+ Cenario</button>
 
   <h2>Fluxo de Caixa — Primeiros 12 Meses</h2>
   <div class="table-wrap">
     <table>
-      <thead><tr><th>Mes</th><th>Receita</th><th>Custo</th><th>Resultado</th><th>Saldo Acumulado</th></tr></thead>
-      <tbody>
-        <tr><td>Mes 1</td><td>R$ 0</td><td>R$ 85.000</td><td style="color:#C0392B;">-R$ 85.000</td><td style="color:#C0392B;">-R$ 85.000</td></tr>
-        <tr><td>Mes 2</td><td>R$ 0</td><td>R$ 75.000</td><td style="color:#C0392B;">-R$ 75.000</td><td style="color:#C0392B;">-R$ 160.000</td></tr>
-        <tr><td>Mes 3</td><td>R$ 25.000</td><td>R$ 65.000</td><td style="color:#C0392B;">-R$ 40.000</td><td style="color:#C0392B;">-R$ 200.000</td></tr>
-        <tr><td>Mes 4</td><td>R$ 45.000</td><td>R$ 65.000</td><td style="color:#C0392B;">-R$ 20.000</td><td style="color:#C0392B;">-R$ 220.000</td></tr>
-        <tr><td>Mes 5 (Estreia)</td><td>R$ 75.000</td><td>R$ 65.000</td><td style="color:var(--verde);">+R$ 10.000</td><td style="color:#C0392B;">-R$ 210.000</td></tr>
-        <tr><td>Mes 6</td><td>R$ 85.000</td><td>R$ 65.000</td><td style="color:var(--verde);">+R$ 20.000</td><td style="color:#C0392B;">-R$ 190.000</td></tr>
-        <tr><td>Mes 7 (Break-even)</td><td>R$ 95.000</td><td>R$ 65.000</td><td style="color:var(--verde);">+R$ 30.000</td><td style="color:#C0392B;">-R$ 160.000</td></tr>
-        <tr><td>Mes 8</td><td>R$ 100.000</td><td>R$ 65.000</td><td style="color:var(--verde);">+R$ 35.000</td><td style="color:#C0392B;">-R$ 125.000</td></tr>
-        <tr><td>Mes 9</td><td>R$ 105.000</td><td>R$ 65.000</td><td style="color:var(--verde);">+R$ 40.000</td><td style="color:#C0392B;">-R$ 85.000</td></tr>
-        <tr><td>Mes 10</td><td>R$ 110.000</td><td>R$ 65.000</td><td style="color:var(--verde);">+R$ 45.000</td><td style="color:#C0392B;">-R$ 40.000</td></tr>
-        <tr><td>Mes 11</td><td>R$ 110.000</td><td>R$ 65.000</td><td style="color:var(--verde);">+R$ 45.000</td><td style="color:var(--verde);">+R$ 5.000</td></tr>
-        <tr><td>Mes 12</td><td>R$ 110.000</td><td>R$ 65.000</td><td style="color:var(--verde);">+R$ 45.000</td><td style="color:var(--verde);">+R$ 50.000</td></tr>
-      </tbody>
+      <thead><tr><th>Mes</th><th>Receita</th><th>Custo</th><th>Resultado</th><th>Saldo Acumulado</th><th style="width:32px;"></th></tr></thead>
+      <tbody id="fin-fluxo-tbody"></tbody>
     </table>
   </div>
+  <button onclick="addFinRow('fluxo')" class="btn-add">+ Mes</button>
 </section>
 
 <!-- ═══════ SECAO 5: PIPELINE ═══════ -->
@@ -927,6 +930,14 @@ tfoot td { padding: 11px 14px; }
     </div>
   </div>
 
+  <div class="config-card" style="margin-top:0;">
+    <h3>Seguranca — Senha de Acesso</h3>
+    <div style="margin-top:12px;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;">
+      <p style="font-size:13.5px;color:#374151;">Altere a senha de acesso ao dashboard. A senha padrao e <strong>foco2026</strong>.</p>
+      <button class="btn btn-secondary" onclick="alterarSenha()">Alterar Senha</button>
+    </div>
+  </div>
+
   <div class="reset-area">
     <p><strong>Resetar todos os dados:</strong> Apaga todas as alteracoes e volta para os dados originais do projeto.</p>
     <button class="btn btn-danger" onclick="confirmarReset()">Resetar Dados</button>
@@ -1048,6 +1059,18 @@ tfoot td { padding: 11px 14px; }
 
 </main>
 
+<!-- LOGIN OVERLAY -->
+<div id="login-overlay" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(27,79,114,0.97);z-index:9999;align-items:center;justify-content:center;flex-direction:column;gap:16px;">
+  <div style="background:#fff;border-radius:14px;padding:40px 36px;width:100%;max-width:380px;box-shadow:0 20px 60px rgba(0,0,0,0.3);text-align:center;">
+    <div style="font-size:40px;margin-bottom:8px;">🔒</div>
+    <h2 style="font-family:'Playfair Display',serif;color:#1B4F72;margin-bottom:6px;font-size:22px;">Foco em Saude Minas</h2>
+    <p style="font-size:13px;color:#6B7280;margin-bottom:24px;">Digite a senha para acessar o dashboard</p>
+    <input type="password" id="login-input" placeholder="Senha" onkeydown="if(event.key==='Enter')tentarLogin()" style="width:100%;padding:12px 16px;border:1px solid #E8ECF0;border-radius:8px;font-size:15px;font-family:'DM Sans',sans-serif;text-align:center;outline:none;margin-bottom:12px;" />
+    <div id="login-erro" style="display:none;color:#C0392B;font-size:13px;margin-bottom:10px;">Senha incorreta. Tente novamente.</div>
+    <button onclick="tentarLogin()" style="width:100%;padding:12px;background:#00A878;color:#fff;border:none;border-radius:8px;font-size:15px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;">Entrar</button>
+  </div>
+</div>
+
 <!-- TOAST -->
 <div class="toast" id="toast"></div>
 
@@ -1114,7 +1137,51 @@ const DEFAULT_DATA = {
     { id:3, servico:"Cota de Participacao", valor:"R$ 5.000/ep", formato:"Por episodio", descricao:"Especialista convidado no programa, postagens nas redes, release digital" },
     { id:4, servico:"Merchandising", valor:"R$ 2.500/ep", formato:"Por episodio", descricao:"Produto/servico apresentado durante o programa com chamada especial" },
     { id:5, servico:"Midia Kit Digital", valor:"Gratis", formato:"Sob consulta", descricao:"Material completo de apresentacao para potenciais patrocinadores" }
-  ]
+  ],
+  financeiro: {
+    cards: [
+      { id:1, label:"Receita Total Ano 1", value:"R$ 1.220.000", sub:"Cenario realista (80% ocupacao)", color:"" },
+      { id:2, label:"Custo Total Ano 1", value:"R$ 780.000", sub:"Estrutura + Producao + Marketing", color:"#C0392B" },
+      { id:3, label:"Resultado Operacional", value:"R$ 440.000", sub:"Margem de 36%", color:"var(--verde)" },
+      { id:4, label:"Break-even", value:"Mes 7", sub:"60% de ocupacao minima", color:"" }
+    ],
+    grafico: "Investimento inicial: R$ 285.000 | Break-even: Mes 7",
+    receitaFontes: [
+      { id:1, fonte:"Cota Master", valor:"R$ 480.000", pct:"39%" },
+      { id:2, fonte:"Cotas de Apoio (3)", valor:"R$ 288.000", pct:"24%" },
+      { id:3, fonte:"Participacoes", valor:"R$ 300.000", pct:"25%" },
+      { id:4, fonte:"Merchandising", valor:"R$ 96.000", pct:"8%" },
+      { id:5, fonte:"Digital", valor:"R$ 56.000", pct:"4%" }
+    ],
+    receitaTotal: { valor:"R$ 1.220.000", pct:"100%" },
+    custos: [
+      { id:1, item:"Canal / Espaco TV", valor:"R$ 240.000", pct:"31%" },
+      { id:2, item:"Equipe Fixa", valor:"R$ 300.000", pct:"38%" },
+      { id:3, item:"Producao Semanal", valor:"R$ 156.000", pct:"20%" },
+      { id:4, item:"Marketing Digital", valor:"R$ 48.000", pct:"6%" },
+      { id:5, item:"Operacional + Adm.", valor:"R$ 36.000", pct:"5%" }
+    ],
+    custosTotal: { valor:"R$ 780.000", pct:"100%" },
+    cenarios: [
+      { id:1, cenario:"Pessimista", ocupacao:"60%", receita:"R$ 732.000", custo:"R$ 780.000", resultado:"-R$ 48.000", margem:"-6,6%" },
+      { id:2, cenario:"Realista", ocupacao:"80%", receita:"R$ 1.220.000", custo:"R$ 780.000", resultado:"R$ 440.000", margem:"36%" },
+      { id:3, cenario:"Otimista", ocupacao:"95%", receita:"R$ 1.450.000", custo:"R$ 780.000", resultado:"R$ 670.000", margem:"46%" }
+    ],
+    fluxo: [
+      { id:1, mes:"Mes 1", receita:"R$ 0", custo:"R$ 85.000", resultado:"-R$ 85.000", saldo:"-R$ 85.000" },
+      { id:2, mes:"Mes 2", receita:"R$ 0", custo:"R$ 75.000", resultado:"-R$ 75.000", saldo:"-R$ 160.000" },
+      { id:3, mes:"Mes 3", receita:"R$ 25.000", custo:"R$ 65.000", resultado:"-R$ 40.000", saldo:"-R$ 200.000" },
+      { id:4, mes:"Mes 4", receita:"R$ 45.000", custo:"R$ 65.000", resultado:"-R$ 20.000", saldo:"-R$ 220.000" },
+      { id:5, mes:"Mes 5 (Estreia)", receita:"R$ 75.000", custo:"R$ 65.000", resultado:"+R$ 10.000", saldo:"-R$ 210.000" },
+      { id:6, mes:"Mes 6", receita:"R$ 85.000", custo:"R$ 65.000", resultado:"+R$ 20.000", saldo:"-R$ 190.000" },
+      { id:7, mes:"Mes 7 (Break-even)", receita:"R$ 95.000", custo:"R$ 65.000", resultado:"+R$ 30.000", saldo:"-R$ 160.000" },
+      { id:8, mes:"Mes 8", receita:"R$ 100.000", custo:"R$ 65.000", resultado:"+R$ 35.000", saldo:"-R$ 125.000" },
+      { id:9, mes:"Mes 9", receita:"R$ 105.000", custo:"R$ 65.000", resultado:"+R$ 40.000", saldo:"-R$ 85.000" },
+      { id:10, mes:"Mes 10", receita:"R$ 110.000", custo:"R$ 65.000", resultado:"+R$ 45.000", saldo:"-R$ 40.000" },
+      { id:11, mes:"Mes 11", receita:"R$ 110.000", custo:"R$ 65.000", resultado:"+R$ 45.000", saldo:"+R$ 5.000" },
+      { id:12, mes:"Mes 12", receita:"R$ 110.000", custo:"R$ 65.000", resultado:"+R$ 45.000", saldo:"+R$ 50.000" }
+    ]
+  }
 };
 
 // ═══════════════════════════════════════════
@@ -1124,8 +1191,18 @@ function saveData(key, data) {
   localStorage.setItem('foco_saude_' + key, JSON.stringify(data));
 }
 function loadData(key) {
-  const saved = localStorage.getItem('foco_saude_' + key);
-  return saved ? JSON.parse(saved) : JSON.parse(JSON.stringify(DEFAULT_DATA[key]));
+  try {
+    const saved = localStorage.getItem('foco_saude_' + key);
+    if (!saved) return JSON.parse(JSON.stringify(DEFAULT_DATA[key]));
+    const parsed = JSON.parse(saved);
+    if (key === 'financeiro' && (typeof parsed !== 'object' || !parsed.cards)) {
+      return JSON.parse(JSON.stringify(DEFAULT_DATA[key]));
+    }
+    return parsed;
+  } catch(e) {
+    console.warn('loadData error for key', key, e);
+    return JSON.parse(JSON.stringify(DEFAULT_DATA[key]));
+  }
 }
 
 // Estado em memoria
@@ -1136,7 +1213,8 @@ let state = {
   equipe:    loadData('equipe'),
   marcos:    loadData('marcos'),
   episodios: loadData('episodios'),
-  pricing:   loadData('pricing')
+  pricing:   loadData('pricing'),
+  financeiro: loadData('financeiro')
 };
 
 function saveState(key) {
@@ -1179,6 +1257,53 @@ function renderSection(id) {
   if (id === 'kpis') renderKPIs();
   if (id === 'configuracoes') renderConfig();
   if (id === 'business-plan') renderPricing();
+  if (id === 'financeiro') renderFinanceiro();
+  setTimeout(() => initEditavel(id), 50);
+}
+
+// ═══════════════════════════════════════════
+// CAMPOS EDITAVEIS (contenteditable + data-ek)
+// ═══════════════════════════════════════════
+function initEditavel(secaoId) {
+  const secao = secaoId ? document.getElementById(secaoId) : document;
+  if (!secao) return;
+  secao.querySelectorAll('[data-ek]').forEach(el => {
+    if (el.dataset.ekInit) return;
+    el.dataset.ekInit = '1';
+    el.addEventListener('blur', () => {
+      const ek = el.dataset.ek;
+      saveEk(ek, el.textContent.trim());
+    });
+    el.addEventListener('keydown', e => {
+      if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        el.blur();
+      }
+    });
+  });
+}
+
+function saveEk(ek, valor) {
+  const todos = JSON.parse(localStorage.getItem('foco_saude_ek') || '{}');
+  todos[ek] = valor;
+  localStorage.setItem('foco_saude_ek', JSON.stringify(todos));
+  showToast('Salvo!', 'success');
+}
+
+function loadEk(ek, fallback) {
+  try {
+    const todos = JSON.parse(localStorage.getItem('foco_saude_ek') || '{}');
+    return todos[ek] !== undefined ? todos[ek] : fallback;
+  } catch(e) { return fallback; }
+}
+
+function applyEkValues(secaoId) {
+  const secao = secaoId ? document.getElementById(secaoId) : document;
+  if (!secao) return;
+  secao.querySelectorAll('[data-ek]').forEach(el => {
+    const val = loadEk(el.dataset.ek, null);
+    if (val !== null) el.textContent = val;
+  });
 }
 
 // ═══════════════════════════════════════════
@@ -1908,9 +2033,211 @@ function fecharModalPeloOverlay(e) {
 document.addEventListener('keydown', e => { if (e.key === 'Escape') fecharModal(); });
 
 // ═══════════════════════════════════════════
+// FINANCEIRO EDITAVEL
+// ═══════════════════════════════════════════
+function colValor(v) {
+  const neg = String(v).startsWith('-');
+  const pos = String(v).startsWith('+');
+  const cor = neg ? '#C0392B' : (pos ? 'var(--verde)' : '');
+  return cor ? `style="color:${cor};"` : '';
+}
+
+function renderFinanceiro() {
+  const f = state.financeiro;
+
+  // Cards editaveis
+  document.getElementById('fin-cards').innerHTML = f.cards.map(c => `
+    <div class="card card-metric" data-fin-card="${c.id}">
+      <div class="form-group" style="margin:0 0 6px;">
+        <input class="editable-cell" value="${c.label}" oninput="markFinDirty()" data-fin="cards" data-id="${c.id}" data-field="label" style="font-size:11px;font-weight:600;color:var(--cinza-texto);text-transform:uppercase;letter-spacing:0.5px;" />
+      </div>
+      <input class="editable-cell" value="${c.value}" oninput="markFinDirty()" data-fin="cards" data-id="${c.id}" data-field="value" style="font-family:'Playfair Display',serif;font-size:24px;font-weight:700;${c.color ? 'color:'+c.color+';' : 'color:var(--azul);'}" />
+      <input class="editable-cell" value="${c.sub}" oninput="markFinDirty()" data-fin="cards" data-id="${c.id}" data-field="sub" style="font-size:12px;color:var(--cinza-texto);margin-top:4px;" />
+    </div>
+  `).join('');
+
+  // Grafico (so texto de rodape editavel)
+  document.getElementById('fin-grafico-card').innerHTML = `
+    <h3>Visao Financeira Ano 1</h3>
+    <div class="bar-chart">
+      <div class="bar-group"><div class="bar-value">${f.cards[0]?.value||''}</div><div class="bar bar-receita"></div><div class="bar-label">Receita</div></div>
+      <div class="bar-group"><div class="bar-value">${f.cards[1]?.value||''}</div><div class="bar bar-custo"></div><div class="bar-label">Custos</div></div>
+      <div class="bar-group"><div class="bar-value">${f.cards[2]?.value||''}</div><div class="bar bar-result"></div><div class="bar-label">Resultado</div></div>
+    </div>
+    <input class="editable-cell" value="${f.grafico}" oninput="markFinDirty()" data-fin="grafico" style="font-size:12px;color:var(--cinza-texto);margin-top:8px;width:100%;" />
+  `;
+
+  // Receita por Fonte
+  document.getElementById('fin-receita-tbody').innerHTML = f.receitaFontes.map(r => `
+    <tr data-id="${r.id}">
+      <td><input class="editable-cell" value="${r.fonte}" oninput="markFinDirty()" data-fin="receitaFontes" data-id="${r.id}" data-field="fonte" /></td>
+      <td><input class="editable-cell" value="${r.valor}" oninput="markFinDirty()" data-fin="receitaFontes" data-id="${r.id}" data-field="valor" /></td>
+      <td><input class="editable-cell" value="${r.pct}" oninput="markFinDirty()" data-fin="receitaFontes" data-id="${r.id}" data-field="pct" /></td>
+      <td><button class="btn-delete-small" onclick="deleteFinRow('receitaFontes',${r.id})" title="Excluir">&#128465;</button></td>
+    </tr>
+  `).join('');
+  document.getElementById('fin-receita-total-valor').value = f.receitaTotal.valor;
+  document.getElementById('fin-receita-total-pct').value = f.receitaTotal.pct;
+
+  // Custos
+  document.getElementById('fin-custos-tbody').innerHTML = f.custos.map(c => `
+    <tr data-id="${c.id}">
+      <td><input class="editable-cell" value="${c.item}" oninput="markFinDirty()" data-fin="custos" data-id="${c.id}" data-field="item" /></td>
+      <td><input class="editable-cell" value="${c.valor}" oninput="markFinDirty()" data-fin="custos" data-id="${c.id}" data-field="valor" /></td>
+      <td><input class="editable-cell" value="${c.pct}" oninput="markFinDirty()" data-fin="custos" data-id="${c.id}" data-field="pct" /></td>
+      <td><button class="btn-delete-small" onclick="deleteFinRow('custos',${c.id})" title="Excluir">&#128465;</button></td>
+    </tr>
+  `).join('');
+  document.getElementById('fin-custos-total-valor').value = f.custosTotal.valor;
+  document.getElementById('fin-custos-total-pct').value = f.custosTotal.pct;
+
+  // Cenarios
+  const cenBadge = ['badge-vermelho','badge-amarelo','badge-verde'];
+  document.getElementById('fin-cenarios-tbody').innerHTML = f.cenarios.map((c, i) => `
+    <tr data-id="${c.id}">
+      <td><input class="editable-cell" value="${c.cenario}" oninput="markFinDirty()" data-fin="cenarios" data-id="${c.id}" data-field="cenario" style="font-weight:600;" /></td>
+      <td><input class="editable-cell" value="${c.ocupacao}" oninput="markFinDirty()" data-fin="cenarios" data-id="${c.id}" data-field="ocupacao" /></td>
+      <td><input class="editable-cell" value="${c.receita}" oninput="markFinDirty()" data-fin="cenarios" data-id="${c.id}" data-field="receita" /></td>
+      <td><input class="editable-cell" value="${c.custo}" oninput="markFinDirty()" data-fin="cenarios" data-id="${c.id}" data-field="custo" /></td>
+      <td ${colValor(c.resultado)}><input class="editable-cell" value="${c.resultado}" oninput="markFinDirty()" data-fin="cenarios" data-id="${c.id}" data-field="resultado" style="font-weight:700;" /></td>
+      <td><input class="editable-cell" value="${c.margem}" oninput="markFinDirty()" data-fin="cenarios" data-id="${c.id}" data-field="margem" /></td>
+      <td><button class="btn-delete-small" onclick="deleteFinRow('cenarios',${c.id})" title="Excluir">&#128465;</button></td>
+    </tr>
+  `).join('');
+
+  // Fluxo de Caixa
+  document.getElementById('fin-fluxo-tbody').innerHTML = f.fluxo.map(r => `
+    <tr data-id="${r.id}">
+      <td><input class="editable-cell" value="${r.mes}" oninput="markFinDirty()" data-fin="fluxo" data-id="${r.id}" data-field="mes" /></td>
+      <td><input class="editable-cell" value="${r.receita}" oninput="markFinDirty()" data-fin="fluxo" data-id="${r.id}" data-field="receita" /></td>
+      <td><input class="editable-cell" value="${r.custo}" oninput="markFinDirty()" data-fin="fluxo" data-id="${r.id}" data-field="custo" /></td>
+      <td ${colValor(r.resultado)}><input class="editable-cell" value="${r.resultado}" oninput="markFinDirty()" data-fin="fluxo" data-id="${r.id}" data-field="resultado" /></td>
+      <td ${colValor(r.saldo)}><input class="editable-cell" value="${r.saldo}" oninput="markFinDirty()" data-fin="fluxo" data-id="${r.id}" data-field="saldo" /></td>
+      <td><button class="btn-delete-small" onclick="deleteFinRow('fluxo',${r.id})" title="Excluir">&#128465;</button></td>
+    </tr>
+  `).join('');
+}
+
+function markFinDirty() {
+  const btn = document.getElementById('btn-save-financeiro');
+  if (btn) btn.style.display = 'inline-flex';
+}
+
+function saveFinanceiro() {
+  const f = state.financeiro;
+
+  // Cards
+  document.querySelectorAll('[data-fin="cards"]').forEach(inp => {
+    const id = Number(inp.dataset.id);
+    const field = inp.dataset.field;
+    const idx = f.cards.findIndex(c => c.id === id);
+    if (idx >= 0) f.cards[idx][field] = inp.value;
+  });
+
+  // Grafico
+  const gEl = document.querySelector('[data-fin="grafico"]');
+  if (gEl) f.grafico = gEl.value;
+
+  // Receita fontes
+  document.querySelectorAll('[data-fin="receitaFontes"]').forEach(inp => {
+    const id = Number(inp.dataset.id);
+    const idx = f.receitaFontes.findIndex(r => r.id === id);
+    if (idx >= 0) f.receitaFontes[idx][inp.dataset.field] = inp.value;
+  });
+  f.receitaTotal.valor = document.getElementById('fin-receita-total-valor').value;
+  f.receitaTotal.pct   = document.getElementById('fin-receita-total-pct').value;
+
+  // Custos
+  document.querySelectorAll('[data-fin="custos"]').forEach(inp => {
+    const id = Number(inp.dataset.id);
+    const idx = f.custos.findIndex(c => c.id === id);
+    if (idx >= 0) f.custos[idx][inp.dataset.field] = inp.value;
+  });
+  f.custosTotal.valor = document.getElementById('fin-custos-total-valor').value;
+  f.custosTotal.pct   = document.getElementById('fin-custos-total-pct').value;
+
+  // Cenarios
+  document.querySelectorAll('[data-fin="cenarios"]').forEach(inp => {
+    const id = Number(inp.dataset.id);
+    const idx = f.cenarios.findIndex(c => c.id === id);
+    if (idx >= 0) f.cenarios[idx][inp.dataset.field] = inp.value;
+  });
+
+  // Fluxo
+  document.querySelectorAll('[data-fin="fluxo"]').forEach(inp => {
+    const id = Number(inp.dataset.id);
+    const idx = f.fluxo.findIndex(r => r.id === id);
+    if (idx >= 0) f.fluxo[idx][inp.dataset.field] = inp.value;
+  });
+
+  saveState('financeiro');
+  document.getElementById('btn-save-financeiro').style.display = 'none';
+  showToast('Financeiro salvo!');
+}
+
+function addFinRow(secao) {
+  const f = state.financeiro;
+  const newId = () => {
+    const arr = f[secao];
+    return arr.length > 0 ? Math.max(...arr.map(x => x.id)) + 1 : 1;
+  };
+  if (secao === 'receitaFontes') f.receitaFontes.push({ id:newId(), fonte:'Nova fonte', valor:'R$ 0', pct:'0%' });
+  if (secao === 'custos') f.custos.push({ id:newId(), item:'Novo item', valor:'R$ 0', pct:'0%' });
+  if (secao === 'cenarios') f.cenarios.push({ id:newId(), cenario:'Novo cenario', ocupacao:'0%', receita:'R$ 0', custo:'R$ 0', resultado:'R$ 0', margem:'0%' });
+  if (secao === 'fluxo') f.fluxo.push({ id:newId(), mes:'Mes '+(f.fluxo.length+1), receita:'R$ 0', custo:'R$ 0', resultado:'R$ 0', saldo:'R$ 0' });
+  saveState('financeiro');
+  renderFinanceiro();
+  markFinDirty();
+}
+
+function deleteFinRow(secao, id) {
+  if (!confirm('Excluir esta linha?')) return;
+  state.financeiro[secao] = state.financeiro[secao].filter(x => x.id !== id);
+  saveState('financeiro');
+  renderFinanceiro();
+  showToast('Linha excluida.');
+}
+
+// ═══════════════════════════════════════════
+// SENHA DE ACESSO
+// ═══════════════════════════════════════════
+function checkAuth() {
+  const senhaCorreta = localStorage.getItem('foco_senha') || 'foco2026';
+  const autenticado  = sessionStorage.getItem('foco_auth');
+  if (autenticado === '1') return;
+  const overlay = document.getElementById('login-overlay');
+  if (overlay) overlay.style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+}
+
+function tentarLogin() {
+  const input = document.getElementById('login-input').value;
+  const senhaCorreta = localStorage.getItem('foco_senha') || 'foco2026';
+  if (input === senhaCorreta) {
+    sessionStorage.setItem('foco_auth', '1');
+    document.getElementById('login-overlay').style.display = 'none';
+    document.body.style.overflow = '';
+  } else {
+    document.getElementById('login-erro').style.display = 'block';
+    document.getElementById('login-input').value = '';
+    document.getElementById('login-input').focus();
+  }
+}
+
+function alterarSenha() {
+  const nova = prompt('Digite a nova senha (minimo 4 caracteres):');
+  if (!nova || nova.length < 4) { alert('Senha invalida.'); return; }
+  const confirma = prompt('Confirme a nova senha:');
+  if (nova !== confirma) { alert('As senhas nao conferem.'); return; }
+  localStorage.setItem('foco_senha', nova);
+  showToast('Senha alterada com sucesso!');
+}
+
+// ═══════════════════════════════════════════
 // INICIALIZACAO
 // ═══════════════════════════════════════════
 window.addEventListener('load', () => {
+  checkAuth();
   const hash = window.location.hash.replace('#', '');
   if (hash) {
     showSection(hash);
@@ -1919,6 +2246,7 @@ window.addEventListener('load', () => {
     document.querySelector('.nav-item').classList.add('active');
   }
   renderPricing();
+  renderFinanceiro();
 });
 </script>
 </body>
