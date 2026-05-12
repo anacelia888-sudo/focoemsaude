@@ -2092,6 +2092,22 @@ function calcTotaisFinanceiro() {
   if (elCP) elCP.textContent = '100%';
 
   // Atualiza card de Resultado (card id=3)
+  // Atualiza pct de cada linha de receita
+  document.querySelectorAll('[data-pct-rec]').forEach(el => {
+    const id = el.dataset.pctRec;
+    const inp = document.querySelector(`[data-fin="receitaFontes"][data-id="${id}"][data-field="valor"]`);
+    const val = inp ? parseReais(inp.value) : 0;
+    el.textContent = totalReceita > 0 ? (val / totalReceita * 100).toFixed(1) + '%' : '0%';
+  });
+
+  // Atualiza pct de cada linha de custo
+  document.querySelectorAll('[data-pct-cus]').forEach(el => {
+    const id = el.dataset.pctCus;
+    const inp = document.querySelector(`[data-fin="custos"][data-id="${id}"][data-field="valor"]`);
+    const val = inp ? parseReais(inp.value) : 0;
+    el.textContent = totalCusto > 0 ? (val / totalCusto * 100).toFixed(1) + '%' : '0%';
+  });
+
   // Atualiza cards travados em tempo real
   const elCardRec = document.getElementById('fin-card-receita');
   if (elCardRec) elCardRec.textContent = totalReceita > 0 ? formatReais(totalReceita) : '—';
@@ -2160,7 +2176,7 @@ function renderFinanceiro() {
     <tr data-id="${r.id}">
       <td><input class="editable-cell" value="${r.fonte}" oninput="markFinDirty()" data-fin="receitaFontes" data-id="${r.id}" data-field="fonte" /></td>
       <td><input class="editable-cell" value="${r.valor}" oninput="markFinDirty();calcTotaisFinanceiro()" data-fin="receitaFontes" data-id="${r.id}" data-field="valor" /></td>
-      <td><input class="editable-cell" value="${r.pct}" oninput="markFinDirty()" data-fin="receitaFontes" data-id="${r.id}" data-field="pct" /></td>
+      <td><span class="calc-locked" data-pct-rec="${r.id}">—</span></td>
       <td><button class="btn-delete-small" onclick="deleteFinRow('receitaFontes',${r.id})" title="Excluir">&#128465;</button></td>
     </tr>
   `).join('');
@@ -2170,7 +2186,7 @@ function renderFinanceiro() {
     <tr data-id="${c.id}">
       <td><input class="editable-cell" value="${c.item}" oninput="markFinDirty()" data-fin="custos" data-id="${c.id}" data-field="item" /></td>
       <td><input class="editable-cell" value="${c.valor}" oninput="markFinDirty();calcTotaisFinanceiro()" data-fin="custos" data-id="${c.id}" data-field="valor" /></td>
-      <td><input class="editable-cell" value="${c.pct}" oninput="markFinDirty()" data-fin="custos" data-id="${c.id}" data-field="pct" /></td>
+      <td><span class="calc-locked" data-pct-cus="${c.id}">—</span></td>
       <td><button class="btn-delete-small" onclick="deleteFinRow('custos',${c.id})" title="Excluir">&#128465;</button></td>
     </tr>
   `).join('');
@@ -2246,20 +2262,26 @@ function saveFinanceiro() {
   const gEl = document.querySelector('[data-fin="grafico"]');
   if (gEl) f.grafico = gEl.value;
 
-  // Receita fontes
+  // Receita fontes (salva fonte e valor; pct calculado abaixo)
   document.querySelectorAll('[data-fin="receitaFontes"]').forEach(inp => {
     const id = Number(inp.dataset.id);
     const idx = f.receitaFontes.findIndex(r => r.id === id);
     if (idx >= 0) f.receitaFontes[idx][inp.dataset.field] = inp.value;
   });
+  // Atualiza pct calculado no state
+  const _totRec = f.receitaFontes.reduce((s,r) => s + parseReais(r.valor), 0);
+  f.receitaFontes.forEach(r => { r.pct = _totRec > 0 ? (parseReais(r.valor) / _totRec * 100).toFixed(1) + '%' : '0%'; });
   // totais calculados automaticamente — nao lidos de input
 
-  // Custos
+  // Custos (salva item e valor; pct calculado abaixo)
   document.querySelectorAll('[data-fin="custos"]').forEach(inp => {
     const id = Number(inp.dataset.id);
     const idx = f.custos.findIndex(c => c.id === id);
     if (idx >= 0) f.custos[idx][inp.dataset.field] = inp.value;
   });
+  // Atualiza pct calculado no state
+  const _totCus = f.custos.reduce((s,c) => s + parseReais(c.valor), 0);
+  f.custos.forEach(c => { c.pct = _totCus > 0 ? (parseReais(c.valor) / _totCus * 100).toFixed(1) + '%' : '0%'; });
   // totais calculados automaticamente — nao lidos de input
 
   // Cenarios
