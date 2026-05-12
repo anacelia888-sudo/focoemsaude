@@ -2064,32 +2064,31 @@ function formatReais(num) {
 }
 
 function calcTotaisFinanceiro() {
-  const f = state.financeiro;
-  const totalReceita = f.receitaFontes.reduce((s,r) => s + parseReais(r.valor), 0);
-  const totalCusto   = f.custos.reduce((s,c) => s + parseReais(c.valor), 0);
-  const resultado    = totalReceita - totalCusto;
+  // Le dos inputs visiveis na tela (nao do state, pois pode nao estar salvo ainda)
+  let totalReceita = 0;
+  document.querySelectorAll('[data-fin="receitaFontes"][data-field="valor"]').forEach(inp => {
+    totalReceita += parseReais(inp.value);
+  });
+
+  let totalCusto = 0;
+  document.querySelectorAll('[data-fin="custos"][data-field="valor"]').forEach(inp => {
+    totalCusto += parseReais(inp.value);
+  });
+
+  const resultado = totalReceita - totalCusto;
 
   const elRV = document.getElementById('fin-receita-total-valor');
   const elRP = document.getElementById('fin-receita-total-pct');
   const elCV = document.getElementById('fin-custos-total-valor');
   const elCP = document.getElementById('fin-custos-total-pct');
-  if (elRV) elRV.textContent = formatReais(totalReceita);
+  if (elRV) elRV.textContent = totalReceita > 0 ? formatReais(totalReceita) : '—';
   if (elRP) elRP.textContent = '100%';
-  if (elCV) elCV.textContent = formatReais(totalCusto);
+  if (elCV) elCV.textContent = totalCusto > 0 ? formatReais(totalCusto) : '—';
   if (elCP) elCP.textContent = '100%';
 
-  // Atualiza cards com valores de metricas
-  const m = state.metricas;
-  const cardVals = [
-    formatReais(m.receitaAnual),
-    formatReais(m.investimento),
-    formatReais(resultado > 0 ? resultado : m.receitaAnual - totalCusto),
-    'Mes ' + m.breakeven
-  ];
-  [0,1,2,3].forEach(i => {
-    const el = document.querySelector(`[data-fin="cards"][data-id="${i+1}"][data-field="value"]`);
-    if (el) { el.value = cardVals[i]; el.setAttribute('readonly', true); el.style.cursor='not-allowed'; el.style.background='var(--cinza-medio)'; }
-  });
+  // Atualiza card de Resultado (card id=3)
+  const elRes = document.querySelector('[data-fin="cards"][data-id="3"][data-field="value"]');
+  if (elRes) elRes.value = resultado !== 0 ? formatReais(resultado) : '—';
 
   return { totalReceita, totalCusto, resultado };
 }
@@ -2130,25 +2129,21 @@ function renderFinanceiro() {
   document.getElementById('fin-receita-tbody').innerHTML = f.receitaFontes.map(r => `
     <tr data-id="${r.id}">
       <td><input class="editable-cell" value="${r.fonte}" oninput="markFinDirty()" data-fin="receitaFontes" data-id="${r.id}" data-field="fonte" /></td>
-      <td><input class="editable-cell" value="${r.valor}" oninput="markFinDirty()" data-fin="receitaFontes" data-id="${r.id}" data-field="valor" /></td>
+      <td><input class="editable-cell" value="${r.valor}" oninput="markFinDirty();calcTotaisFinanceiro()" data-fin="receitaFontes" data-id="${r.id}" data-field="valor" /></td>
       <td><input class="editable-cell" value="${r.pct}" oninput="markFinDirty()" data-fin="receitaFontes" data-id="${r.id}" data-field="pct" /></td>
       <td><button class="btn-delete-small" onclick="deleteFinRow('receitaFontes',${r.id})" title="Excluir">&#128465;</button></td>
     </tr>
   `).join('');
-  document.getElementById('fin-receita-total-valor').value = f.receitaTotal.valor;
-  document.getElementById('fin-receita-total-pct').value = f.receitaTotal.pct;
 
   // Custos
   document.getElementById('fin-custos-tbody').innerHTML = f.custos.map(c => `
     <tr data-id="${c.id}">
       <td><input class="editable-cell" value="${c.item}" oninput="markFinDirty()" data-fin="custos" data-id="${c.id}" data-field="item" /></td>
-      <td><input class="editable-cell" value="${c.valor}" oninput="markFinDirty()" data-fin="custos" data-id="${c.id}" data-field="valor" /></td>
+      <td><input class="editable-cell" value="${c.valor}" oninput="markFinDirty();calcTotaisFinanceiro()" data-fin="custos" data-id="${c.id}" data-field="valor" /></td>
       <td><input class="editable-cell" value="${c.pct}" oninput="markFinDirty()" data-fin="custos" data-id="${c.id}" data-field="pct" /></td>
       <td><button class="btn-delete-small" onclick="deleteFinRow('custos',${c.id})" title="Excluir">&#128465;</button></td>
     </tr>
   `).join('');
-  document.getElementById('fin-custos-total-valor').value = f.custosTotal.valor;
-  document.getElementById('fin-custos-total-pct').value = f.custosTotal.pct;
 
   // Cenarios
   const cenBadge = ['badge-vermelho','badge-amarelo','badge-verde'];
@@ -2156,9 +2151,9 @@ function renderFinanceiro() {
     <tr data-id="${c.id}">
       <td><input class="editable-cell" value="${c.cenario}" oninput="markFinDirty()" data-fin="cenarios" data-id="${c.id}" data-field="cenario" style="font-weight:600;" /></td>
       <td><input class="editable-cell" value="${c.ocupacao}" oninput="markFinDirty()" data-fin="cenarios" data-id="${c.id}" data-field="ocupacao" /></td>
-      <td><input class="editable-cell" value="${c.receita}" oninput="markFinDirty()" data-fin="cenarios" data-id="${c.id}" data-field="receita" /></td>
-      <td><input class="editable-cell" value="${c.custo}" oninput="markFinDirty()" data-fin="cenarios" data-id="${c.id}" data-field="custo" /></td>
-      <td ${colValor(c.resultado)}><input class="editable-cell" value="${c.resultado}" oninput="markFinDirty()" data-fin="cenarios" data-id="${c.id}" data-field="resultado" style="font-weight:700;" /></td>
+      <td><input class="editable-cell" value="${c.receita}" oninput="markFinDirty();calcCenarioLinha(this)" data-fin="cenarios" data-id="${c.id}" data-field="receita" /></td>
+      <td><input class="editable-cell" value="${c.custo}" oninput="markFinDirty();calcCenarioLinha(this)" data-fin="cenarios" data-id="${c.id}" data-field="custo" /></td>
+      <td ${colValor(c.resultado)}><span class="calc-locked" data-cen-res="${c.id}" style="font-weight:700;">${c.resultado}</span></td>
       <td><input class="editable-cell" value="${c.margem}" oninput="markFinDirty()" data-fin="cenarios" data-id="${c.id}" data-field="margem" /></td>
       <td><button class="btn-delete-small" onclick="deleteFinRow('cenarios',${c.id})" title="Excluir">&#128465;</button></td>
     </tr>
@@ -2177,6 +2172,17 @@ function renderFinanceiro() {
   `).join('');
 
   setTimeout(calcTotaisFinanceiro, 10);
+}
+
+function calcCenarioLinha(inp) {
+  const tr = inp.closest('tr');
+  if (!tr) return;
+  const id = Number(tr.dataset.id);
+  const rec = parseReais(tr.querySelector('[data-field="receita"]')?.value);
+  const cus = parseReais(tr.querySelector('[data-field="custo"]')?.value);
+  const res = rec - cus;
+  const elRes = tr.querySelector('[data-cen-res]');
+  if (elRes) elRes.textContent = formatReais(res);
 }
 
 function calcFluxoLinha(inp) {
