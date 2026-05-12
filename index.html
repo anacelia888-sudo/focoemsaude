@@ -365,6 +365,12 @@ tfoot td { padding: 11px 14px; }
   font-size: 14px; opacity: 0.6; transition: opacity 0.2s;
 }
 .btn-delete-small:hover { opacity: 1; }
+.calc-locked {
+  display:inline-block;padding:4px 6px;
+  background:var(--cinza-medio);border-radius:4px;
+  color:var(--cinza-texto);font-size:inherit;font-family:inherit;
+  cursor:not-allowed;width:100%;
+}
 
 @media (max-width: 768px) {
   :root { --sidebar-w: 0px; }
@@ -469,52 +475,52 @@ tfoot td { padding: 11px 14px; }
   <div class="fase-cards">
     <div class="fase-card atual">
       <h3>Fase 1</h3>
-      <div class="periodo">Meses 1 e 2 — Estruturacao</div>
-      <span class="badge badge-amarelo" style="margin-bottom:12px;">Em Andamento</span>
+      <div class="periodo" contenteditable="true" data-ek="rm-f1-periodo">Meses 1 e 2 — Estruturacao</div>
+      <span class="badge badge-amarelo" style="margin-bottom:12px;" contenteditable="true" data-ek="rm-f1-badge">Em Andamento</span>
       <ul>
-        <li>Contrato com a Band Minas Gerais</li>
-        <li>Abertura do CNPJ (produtora)</li>
-        <li>Contratacao do apresentador(a)</li>
-        <li>Identidade visual completa</li>
-        <li>Midia kit profissional</li>
-        <li>Pre-venda Cota Master</li>
-        <li>Site institucional e redes sociais</li>
+        <li contenteditable="true" data-ek="rm-f1-li1">Contrato com a Band Minas Gerais</li>
+        <li contenteditable="true" data-ek="rm-f1-li2">Abertura do CNPJ (produtora)</li>
+        <li contenteditable="true" data-ek="rm-f1-li3">Contratacao do apresentador(a)</li>
+        <li contenteditable="true" data-ek="rm-f1-li4">Identidade visual completa</li>
+        <li contenteditable="true" data-ek="rm-f1-li5">Midia kit profissional</li>
+        <li contenteditable="true" data-ek="rm-f1-li6">Pre-venda Cota Master</li>
+        <li contenteditable="true" data-ek="rm-f1-li7">Site institucional e redes sociais</li>
       </ul>
     </div>
     <div class="fase-card">
       <h3>Fase 2</h3>
-      <div class="periodo">Meses 3 e 4 — Pre-producao</div>
-      <span class="badge badge-cinza" style="margin-bottom:12px;">Pendente</span>
+      <div class="periodo" contenteditable="true" data-ek="rm-f2-periodo">Meses 3 e 4 — Pre-producao</div>
+      <span class="badge badge-cinza" style="margin-bottom:12px;" contenteditable="true" data-ek="rm-f2-badge">Pendente</span>
       <ul>
-        <li>4 episodios piloto gravados</li>
-        <li>Equipe tecnica completa contratada</li>
-        <li>Testes de transmissao realizados</li>
-        <li>Venda de cotas de apoio</li>
-        <li>Estudio definitivo definido e equipado</li>
+        <li contenteditable="true" data-ek="rm-f2-li1">4 episodios piloto gravados</li>
+        <li contenteditable="true" data-ek="rm-f2-li2">Equipe tecnica completa contratada</li>
+        <li contenteditable="true" data-ek="rm-f2-li3">Testes de transmissao realizados</li>
+        <li contenteditable="true" data-ek="rm-f2-li4">Venda de cotas de apoio</li>
+        <li contenteditable="true" data-ek="rm-f2-li5">Estudio definitivo definido e equipado</li>
       </ul>
     </div>
     <div class="fase-card">
       <h3>Fase 3</h3>
-      <div class="periodo">Mes 5 — Lancamento</div>
-      <span class="badge badge-cinza" style="margin-bottom:12px;">Aguardando</span>
+      <div class="periodo" contenteditable="true" data-ek="rm-f3-periodo">Mes 5 — Lancamento</div>
+      <span class="badge badge-cinza" style="margin-bottom:12px;" contenteditable="true" data-ek="rm-f3-badge">Aguardando</span>
       <ul>
-        <li>Episodio 1 ao vivo (Band Minas)</li>
-        <li>Campanha de lancamento ativa</li>
-        <li>Canal YouTube ativado</li>
-        <li>Instagram com conteudo regular</li>
-        <li>Metricas de audiencia baseline coletadas</li>
+        <li contenteditable="true" data-ek="rm-f3-li1">Episodio 1 ao vivo (Band Minas)</li>
+        <li contenteditable="true" data-ek="rm-f3-li2">Campanha de lancamento ativa</li>
+        <li contenteditable="true" data-ek="rm-f3-li3">Canal YouTube ativado</li>
+        <li contenteditable="true" data-ek="rm-f3-li4">Instagram com conteudo regular</li>
+        <li contenteditable="true" data-ek="rm-f3-li5">Metricas de audiencia baseline coletadas</li>
       </ul>
     </div>
     <div class="fase-card">
       <h3>Fase 4</h3>
-      <div class="periodo">Mes 6 em diante — Crescimento</div>
-      <span class="badge badge-cinza" style="margin-bottom:12px;">Aguardando</span>
+      <div class="periodo" contenteditable="true" data-ek="rm-f4-periodo">Mes 6 em diante — Crescimento</div>
+      <span class="badge badge-cinza" style="margin-bottom:12px;" contenteditable="true" data-ek="rm-f4-badge">Aguardando</span>
       <ul>
-        <li>Expansao do conteudo digital</li>
-        <li>Primeiro evento presencial</li>
-        <li>Novos formatos de conteudo</li>
-        <li>Revisao e renovacao de contratos</li>
-        <li>Meta: 80% de ocupacao (break-even)</li>
+        <li contenteditable="true" data-ek="rm-f4-li1">Expansao do conteudo digital</li>
+        <li contenteditable="true" data-ek="rm-f4-li2">Primeiro evento presencial</li>
+        <li contenteditable="true" data-ek="rm-f4-li3">Novos formatos de conteudo</li>
+        <li contenteditable="true" data-ek="rm-f4-li4">Revisao e renovacao de contratos</li>
+        <li contenteditable="true" data-ek="rm-f4-li5">Meta: 80% de ocupacao (break-even)</li>
       </ul>
     </div>
   </div>
@@ -542,7 +548,7 @@ tfoot td { padding: 11px 14px; }
 
   <div class="card" style="margin-bottom:20px;">
     <h3>Proposta de Valor</h3>
-    <p style="font-size:14px;line-height:1.7;color:#374151;">O FOCO em SAUDE Minas e o unico talk show semanal de saude da Band Minas Gerais, combinando credibilidade televisiva com alcance digital. Oferecemos a patrocinadores acesso a uma audiencia qualificada de 150.000 a 350.000 espectadores por episodio, com cobertura de 100% do estado de Minas Gerais, em um formato editorial que gera atencao genuina, nao apenas tolerancia ao anuncio.</p>
+    <p style="font-size:14px;line-height:1.7;color:#374151;" contenteditable="true" data-ek="bp-proposta">O FOCO em SAUDE Minas e o unico talk show semanal de saude da Band Minas Gerais, combinando credibilidade televisiva com alcance digital. Oferecemos a patrocinadores acesso a uma audiencia qualificada de 150.000 a 350.000 espectadores por episodio, com cobertura de 100% do estado de Minas Gerais, em um formato editorial que gera atencao genuina, nao apenas tolerancia ao anuncio.</p>
   </div>
 
   <div class="row-2">
@@ -552,9 +558,9 @@ tfoot td { padding: 11px 14px; }
         <table>
           <thead><tr><th>Publico</th><th>Perfil</th></tr></thead>
           <tbody>
-            <tr><td>Audiencia TV</td><td>Adultos 30-65 anos, classes A e B, interesse em saude, cobertura MG</td></tr>
-            <tr><td>Anunciantes</td><td>Hospitais, planos, clinicas, laboratorios, farmacias, med-tech</td></tr>
-            <tr><td>Convidados</td><td>Medicos especialistas de MG com presenca na Band como autoridade</td></tr>
+            <tr><td contenteditable="true" data-ek="bp-m1a">Audiencia TV</td><td contenteditable="true" data-ek="bp-m1b">Adultos 30-65 anos, classes A e B, interesse em saude, cobertura MG</td></tr>
+            <tr><td contenteditable="true" data-ek="bp-m2a">Anunciantes</td><td contenteditable="true" data-ek="bp-m2b">Hospitais, planos, clinicas, laboratorios, farmacias, med-tech</td></tr>
+            <tr><td contenteditable="true" data-ek="bp-m3a">Convidados</td><td contenteditable="true" data-ek="bp-m3b">Medicos especialistas de MG com presenca na Band como autoridade</td></tr>
           </tbody>
         </table>
       </div>
@@ -587,12 +593,12 @@ tfoot td { padding: 11px 14px; }
   <h2>Diferenciais Competitivos</h2>
   <div class="card" style="margin-bottom:20px;">
     <ul style="list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:10px;">
-      <li style="font-size:13.5px;padding:8px 0;border-bottom:1px solid var(--cinza-medio);">&#x2714; TV aberta + digital em uma unica cota</li>
-      <li style="font-size:13.5px;padding:8px 0;border-bottom:1px solid var(--cinza-medio);">&#x2714; Unico programa de saude semanal em MG</li>
-      <li style="font-size:13.5px;padding:8px 0;border-bottom:1px solid var(--cinza-medio);">&#x2714; Formato editorial (nao apenas publicidade)</li>
-      <li style="font-size:13.5px;padding:8px 0;border-bottom:1px solid var(--cinza-medio);">&#x2714; Exclusividade de segmento para Cota Master</li>
-      <li style="font-size:13.5px;padding:8px 0;">&#x2714; Equipe especializada em saude e comunicacao</li>
-      <li style="font-size:13.5px;padding:8px 0;">&#x2714; 52 episodios por ano, audiencia recorrente</li>
+      <li style="font-size:13.5px;padding:8px 0;border-bottom:1px solid var(--cinza-medio);" contenteditable="true" data-ek="bp-dif1">&#x2714; TV aberta + digital em uma unica cota</li>
+      <li style="font-size:13.5px;padding:8px 0;border-bottom:1px solid var(--cinza-medio);" contenteditable="true" data-ek="bp-dif2">&#x2714; Unico programa de saude semanal em MG</li>
+      <li style="font-size:13.5px;padding:8px 0;border-bottom:1px solid var(--cinza-medio);" contenteditable="true" data-ek="bp-dif3">&#x2714; Formato editorial (nao apenas publicidade)</li>
+      <li style="font-size:13.5px;padding:8px 0;border-bottom:1px solid var(--cinza-medio);" contenteditable="true" data-ek="bp-dif4">&#x2714; Exclusividade de segmento para Cota Master</li>
+      <li style="font-size:13.5px;padding:8px 0;" contenteditable="true" data-ek="bp-dif5">&#x2714; Equipe especializada em saude e comunicacao</li>
+      <li style="font-size:13.5px;padding:8px 0;" contenteditable="true" data-ek="bp-dif6">&#x2714; 52 episodios por ano, audiencia recorrente</li>
     </ul>
   </div>
 
@@ -601,11 +607,11 @@ tfoot td { padding: 11px 14px; }
     <table>
       <thead><tr><th>Risco</th><th>Probabilidade</th><th>Mitigacao</th></tr></thead>
       <tbody>
-        <tr><td>Dificuldade de fechar Cota Master</td><td><span class="badge badge-amarelo">Media</span></td><td>Prospectar desde o Mes 1; ter plano B com 2 cotas extras de apoio</td></tr>
-        <tr><td>Baixa audiencia nos primeiros meses</td><td><span class="badge badge-amarelo">Media</span></td><td>Investimento em marketing digital + campanha de lancamento robusta</td></tr>
-        <tr><td>Problemas tecnicos na transmissao</td><td><span class="badge badge-verde">Baixa</span></td><td>4 episodios piloto para testes antes da estreia ao vivo</td></tr>
-        <tr><td>Saida de apresentador(a)</td><td><span class="badge badge-amarelo">Media</span></td><td>Contrato com clausulas de fidelidade e aviso previo longo</td></tr>
-        <tr><td>Cancelamento por patrocinador</td><td><span class="badge badge-verde">Baixa</span></td><td>Contratos anuais com multa rescisoria + pipeline ativo de reserva</td></tr>
+        <tr><td contenteditable="true" data-ek="bp-r1a">Dificuldade de fechar Cota Master</td><td contenteditable="true" data-ek="bp-r1b">Media</td><td contenteditable="true" data-ek="bp-r1c">Prospectar desde o Mes 1; ter plano B com 2 cotas extras de apoio</td></tr>
+        <tr><td contenteditable="true" data-ek="bp-r2a">Baixa audiencia nos primeiros meses</td><td contenteditable="true" data-ek="bp-r2b">Media</td><td contenteditable="true" data-ek="bp-r2c">Investimento em marketing digital + campanha de lancamento robusta</td></tr>
+        <tr><td contenteditable="true" data-ek="bp-r3a">Problemas tecnicos na transmissao</td><td contenteditable="true" data-ek="bp-r3b">Baixa</td><td contenteditable="true" data-ek="bp-r3c">4 episodios piloto para testes antes da estreia ao vivo</td></tr>
+        <tr><td contenteditable="true" data-ek="bp-r4a">Saida de apresentador(a)</td><td contenteditable="true" data-ek="bp-r4b">Media</td><td contenteditable="true" data-ek="bp-r4c">Contrato com clausulas de fidelidade e aviso previo longo</td></tr>
+        <tr><td contenteditable="true" data-ek="bp-r5a">Cancelamento por patrocinador</td><td contenteditable="true" data-ek="bp-r5b">Baixa</td><td contenteditable="true" data-ek="bp-r5c">Contratos anuais com multa rescisoria + pipeline ativo de reserva</td></tr>
       </tbody>
     </table>
   </div>
@@ -637,8 +643,8 @@ tfoot td { padding: 11px 14px; }
           <tbody id="fin-receita-tbody"></tbody>
           <tfoot><tr>
             <td><strong>TOTAL</strong></td>
-            <td><input class="editable-cell" id="fin-receita-total-valor" oninput="markFinDirty()" style="font-weight:600;" /></td>
-            <td><input class="editable-cell" id="fin-receita-total-pct" oninput="markFinDirty()" style="font-weight:600;" /></td>
+            <td><span id="fin-receita-total-valor" class="calc-locked" style="font-weight:600;"></span></td>
+            <td><span id="fin-receita-total-pct" class="calc-locked" style="font-weight:600;"></span></td>
             <td></td>
           </tr></tfoot>
         </table>
@@ -655,8 +661,8 @@ tfoot td { padding: 11px 14px; }
           <tbody id="fin-custos-tbody"></tbody>
           <tfoot><tr>
             <td><strong>TOTAL</strong></td>
-            <td><input class="editable-cell" id="fin-custos-total-valor" oninput="markFinDirty()" style="font-weight:600;" /></td>
-            <td><input class="editable-cell" id="fin-custos-total-pct" oninput="markFinDirty()" style="font-weight:600;" /></td>
+            <td><span id="fin-custos-total-valor" class="calc-locked" style="font-weight:600;"></span></td>
+            <td><span id="fin-custos-total-pct" class="calc-locked" style="font-weight:600;"></span></td>
             <td></td>
           </tr></tfoot>
         </table>
@@ -751,13 +757,13 @@ tfoot td { padding: 11px 14px; }
     <table>
       <thead><tr><th>Dia</th><th>Atividade Principal</th><th>Responsavel</th><th>Entregavel</th></tr></thead>
       <tbody>
-        <tr><td><strong>Segunda</strong></td><td>Pauta, tema e confirmacao do convidado</td><td>Diretor de Conteudo</td><td>Briefing da semana</td></tr>
-        <tr><td><strong>Terca</strong></td><td>Redacao do roteiro + alinhamento comercial</td><td>Diretor de Conteudo</td><td>Roteiro v2 aprovado</td></tr>
-        <tr><td><strong>Quarta</strong></td><td>Preparacao do estudio, graficos e VTs</td><td>Produtor Executivo</td><td>Estudio pronto</td></tr>
-        <tr><td><strong>Quinta</strong></td><td>Ensaio do apresentador + aprovacao final</td><td>Apresentador</td><td>Roteiro final assinado</td></tr>
-        <tr><td><strong>Sexta</strong></td><td>Gravacao completa do episodio</td><td>Toda a equipe</td><td>Material bruto salvo</td></tr>
-        <tr><td><strong>Sabado</strong></td><td>Exibicao ao vivo na Band Minas Gerais</td><td>Toda a equipe</td><td>Episodio no ar</td></tr>
-        <tr><td><strong>Domingo</strong></td><td>Edicao, YouTube, posts e relatorio</td><td>Editor + Social Media</td><td>Episodio publicado</td></tr>
+        <tr><td contenteditable="true" data-ek="pr-c1a"><strong>Segunda</strong></td><td contenteditable="true" data-ek="pr-c1b">Pauta, tema e confirmacao do convidado</td><td contenteditable="true" data-ek="pr-c1c">Diretor de Conteudo</td><td contenteditable="true" data-ek="pr-c1d">Briefing da semana</td></tr>
+        <tr><td contenteditable="true" data-ek="pr-c2a"><strong>Terca</strong></td><td contenteditable="true" data-ek="pr-c2b">Redacao do roteiro + alinhamento comercial</td><td contenteditable="true" data-ek="pr-c2c">Diretor de Conteudo</td><td contenteditable="true" data-ek="pr-c2d">Roteiro v2 aprovado</td></tr>
+        <tr><td contenteditable="true" data-ek="pr-c3a"><strong>Quarta</strong></td><td contenteditable="true" data-ek="pr-c3b">Preparacao do estudio, graficos e VTs</td><td contenteditable="true" data-ek="pr-c3c">Produtor Executivo</td><td contenteditable="true" data-ek="pr-c3d">Estudio pronto</td></tr>
+        <tr><td contenteditable="true" data-ek="pr-c4a"><strong>Quinta</strong></td><td contenteditable="true" data-ek="pr-c4b">Ensaio do apresentador + aprovacao final</td><td contenteditable="true" data-ek="pr-c4c">Apresentador</td><td contenteditable="true" data-ek="pr-c4d">Roteiro final assinado</td></tr>
+        <tr><td contenteditable="true" data-ek="pr-c5a"><strong>Sexta</strong></td><td contenteditable="true" data-ek="pr-c5b">Gravacao completa do episodio</td><td contenteditable="true" data-ek="pr-c5c">Toda a equipe</td><td contenteditable="true" data-ek="pr-c5d">Material bruto salvo</td></tr>
+        <tr><td contenteditable="true" data-ek="pr-c6a"><strong>Sabado</strong></td><td contenteditable="true" data-ek="pr-c6b">Exibicao ao vivo na Band Minas Gerais</td><td contenteditable="true" data-ek="pr-c6c">Toda a equipe</td><td contenteditable="true" data-ek="pr-c6d">Episodio no ar</td></tr>
+        <tr><td contenteditable="true" data-ek="pr-c7a"><strong>Domingo</strong></td><td contenteditable="true" data-ek="pr-c7b">Edicao, YouTube, posts e relatorio</td><td contenteditable="true" data-ek="pr-c7c">Editor + Social Media</td><td contenteditable="true" data-ek="pr-c7d">Episodio publicado</td></tr>
       </tbody>
     </table>
   </div>
@@ -767,11 +773,11 @@ tfoot td { padding: 11px 14px; }
     <table>
       <thead><tr><th>Bloco</th><th>Duracao</th><th>Conteudo</th></tr></thead>
       <tbody>
-        <tr><td>Abertura + Tema + Entrevista</td><td>10 min</td><td>Apresentador abre, apresenta o tema e entrevista o especialista convidado</td></tr>
-        <tr><td>Break 1</td><td>3 min</td><td>Publicidade: 2x30s Master + 1x30s Apoio</td></tr>
-        <tr><td>Mitos e Verdades + Caso Real</td><td>7 min</td><td>Quadro interativo com 5 afirmacoes + historia real de paciente</td></tr>
-        <tr><td>Break 2</td><td>3 min</td><td>Publicidade + Merchandising integrado</td></tr>
-        <tr><td>Tecnologia em Saude + Dica Pratica</td><td>7 min</td><td>Inovacoes medicas + dica aplicavel imediata para a audiencia</td></tr>
+        <tr><td contenteditable="true" data-ek="pr-e1a">Abertura + Tema + Entrevista</td><td contenteditable="true" data-ek="pr-e1b">10 min</td><td contenteditable="true" data-ek="pr-e1c">Apresentador abre, apresenta o tema e entrevista o especialista convidado</td></tr>
+        <tr><td contenteditable="true" data-ek="pr-e2a">Break 1</td><td contenteditable="true" data-ek="pr-e2b">3 min</td><td contenteditable="true" data-ek="pr-e2c">Publicidade: 2x30s Master + 1x30s Apoio</td></tr>
+        <tr><td contenteditable="true" data-ek="pr-e3a">Mitos e Verdades + Caso Real</td><td contenteditable="true" data-ek="pr-e3b">7 min</td><td contenteditable="true" data-ek="pr-e3c">Quadro interativo com 5 afirmacoes + historia real de paciente</td></tr>
+        <tr><td contenteditable="true" data-ek="pr-e4a">Break 2</td><td contenteditable="true" data-ek="pr-e4b">3 min</td><td contenteditable="true" data-ek="pr-e4c">Publicidade + Merchandising integrado</td></tr>
+        <tr><td contenteditable="true" data-ek="pr-e5a">Tecnologia em Saude + Dica Pratica</td><td contenteditable="true" data-ek="pr-e5b">7 min</td><td contenteditable="true" data-ek="pr-e5c">Inovacoes medicas + dica aplicavel imediata para a audiencia</td></tr>
       </tbody>
       <tfoot><tr><td><strong>TOTAL</strong></td><td><strong>30 min</strong></td><td></td></tr></tfoot>
     </table>
@@ -779,10 +785,10 @@ tfoot td { padding: 11px 14px; }
 
   <h2>Quadros Fixos</h2>
   <div class="cards-grid">
-    <div class="card"><h3>Saude sem Misterio</h3><p style="font-size:13px;color:var(--cinza-texto);">4 min — Explica temas complexos em linguagem acessivel para o grande publico</p></div>
-    <div class="card"><h3>Alerta Medico</h3><p style="font-size:13px;color:var(--cinza-texto);">3-4 min — Informacoes urgentes de saude publica e prevencao</p></div>
-    <div class="card"><h3>Tecnologia que Salva</h3><p style="font-size:13px;color:var(--cinza-texto);">4 min — Inovacoes medicas, equipamentos e tratamentos de ponta</p></div>
-    <div class="card"><h3>Historias que Inspiram</h3><p style="font-size:13px;color:var(--cinza-texto);">3 min — Relatos reais de superacao, cura e qualidade de vida</p></div>
+    <div class="card"><h3 contenteditable="true" data-ek="pr-q1t">Saude sem Misterio</h3><p style="font-size:13px;color:var(--cinza-texto);" contenteditable="true" data-ek="pr-q1d">4 min — Explica temas complexos em linguagem acessivel para o grande publico</p></div>
+    <div class="card"><h3 contenteditable="true" data-ek="pr-q2t">Alerta Medico</h3><p style="font-size:13px;color:var(--cinza-texto);" contenteditable="true" data-ek="pr-q2d">3-4 min — Informacoes urgentes de saude publica e prevencao</p></div>
+    <div class="card"><h3 contenteditable="true" data-ek="pr-q3t">Tecnologia que Salva</h3><p style="font-size:13px;color:var(--cinza-texto);" contenteditable="true" data-ek="pr-q3d">4 min — Inovacoes medicas, equipamentos e tratamentos de ponta</p></div>
+    <div class="card"><h3 contenteditable="true" data-ek="pr-q4t">Historias que Inspiram</h3><p style="font-size:13px;color:var(--cinza-texto);" contenteditable="true" data-ek="pr-q4d">3 min — Relatos reais de superacao, cura e qualidade de vida</p></div>
   </div>
 </section>
 
@@ -798,15 +804,15 @@ tfoot td { padding: 11px 14px; }
 
   <h2>Organograma</h2>
   <div class="org-wrap">
-    <div class="org-row"><div class="org-box centro">Produtor Executivo<span>Lider operacional</span></div></div>
+    <div class="org-row"><div class="org-box centro"><span contenteditable="true" data-ek="eq-org0t">Produtor Executivo</span><span contenteditable="true" data-ek="eq-org0s">Lider operacional</span></div></div>
     <div class="org-linha"></div>
     <div class="org-row">
-      <div class="org-box">Apresentador(a)<span>Face do programa</span></div>
-      <div class="org-box">Dir. de Conteudo<span>Pauta e roteiros</span></div>
-      <div class="org-box">Ger. Comercial<span>Patrocinadores</span></div>
-      <div class="org-box">Editor de Video<span>Pos-producao</span></div>
-      <div class="org-box">Social Media<span>Digital</span></div>
-      <div class="org-box">Assistente<span>Apoio geral</span></div>
+      <div class="org-box"><span contenteditable="true" data-ek="eq-org1t">Apresentador(a)</span><span contenteditable="true" data-ek="eq-org1s">Face do programa</span></div>
+      <div class="org-box"><span contenteditable="true" data-ek="eq-org2t">Dir. de Conteudo</span><span contenteditable="true" data-ek="eq-org2s">Pauta e roteiros</span></div>
+      <div class="org-box"><span contenteditable="true" data-ek="eq-org3t">Ger. Comercial</span><span contenteditable="true" data-ek="eq-org3s">Patrocinadores</span></div>
+      <div class="org-box"><span contenteditable="true" data-ek="eq-org4t">Editor de Video</span><span contenteditable="true" data-ek="eq-org4s">Pos-producao</span></div>
+      <div class="org-box"><span contenteditable="true" data-ek="eq-org5t">Social Media</span><span contenteditable="true" data-ek="eq-org5s">Digital</span></div>
+      <div class="org-box"><span contenteditable="true" data-ek="eq-org6t">Assistente</span><span contenteditable="true" data-ek="eq-org6s">Apoio geral</span></div>
     </div>
   </div>
 
@@ -820,7 +826,7 @@ tfoot td { padding: 11px 14px; }
 
   <div class="alerta alerta-amarelo" style="margin-top:16px;">
     <span class="alerta-icon">&#x26A0;</span>
-    <div>Contratar em etapas: Produtor Executivo e Gerente Comercial primeiro, depois equipe tecnica conforme a producao avancar. Custo meta: R$ 25.000/mes.</div>
+    <div contenteditable="true" data-ek="eq-alerta">Contratar em etapas: Produtor Executivo e Gerente Comercial primeiro, depois equipe tecnica conforme a producao avancar. Custo meta: R$ 25.000/mes.</div>
   </div>
 </section>
 
@@ -838,9 +844,9 @@ tfoot td { padding: 11px 14px; }
     <table>
       <thead><tr><th>Metrica</th><th>Mes 1</th><th>Mes 6</th><th>Ano 1</th><th>Status</th></tr></thead>
       <tbody>
-        <tr><td>Audiencia media por episodio</td><td>150.000</td><td>250.000</td><td>350.000</td><td><span class="badge badge-cinza">Monitorar</span></td></tr>
-        <tr><td>Share de audiencia</td><td>8%</td><td>12%</td><td>15%</td><td><span class="badge badge-cinza">Monitorar</span></td></tr>
-        <tr><td>Retencao por episodio</td><td>70%</td><td>75%</td><td>80%</td><td><span class="badge badge-cinza">Monitorar</span></td></tr>
+        <tr><td contenteditable="true" data-ek="kpi-tv1a">Audiencia media por episodio</td><td contenteditable="true" data-ek="kpi-tv1b">150.000</td><td contenteditable="true" data-ek="kpi-tv1c">250.000</td><td contenteditable="true" data-ek="kpi-tv1d">350.000</td><td contenteditable="true" data-ek="kpi-tv1e">Monitorar</td></tr>
+        <tr><td contenteditable="true" data-ek="kpi-tv2a">Share de audiencia</td><td contenteditable="true" data-ek="kpi-tv2b">8%</td><td contenteditable="true" data-ek="kpi-tv2c">12%</td><td contenteditable="true" data-ek="kpi-tv2d">15%</td><td contenteditable="true" data-ek="kpi-tv2e">Monitorar</td></tr>
+        <tr><td contenteditable="true" data-ek="kpi-tv3a">Retencao por episodio</td><td contenteditable="true" data-ek="kpi-tv3b">70%</td><td contenteditable="true" data-ek="kpi-tv3c">75%</td><td contenteditable="true" data-ek="kpi-tv3d">80%</td><td contenteditable="true" data-ek="kpi-tv3e">Monitorar</td></tr>
       </tbody>
     </table>
   </div>
@@ -850,9 +856,9 @@ tfoot td { padding: 11px 14px; }
     <table>
       <thead><tr><th>Metrica</th><th>Mes 1</th><th>Mes 6</th><th>Ano 1</th><th>Status</th></tr></thead>
       <tbody>
-        <tr><td>Taxa de ocupacao das cotas</td><td>50%</td><td>80%</td><td>95%</td><td><span class="badge badge-cinza">Monitorar</span></td></tr>
-        <tr><td>Retencao de patrocinadores</td><td>80%</td><td>90%</td><td>95%</td><td><span class="badge badge-cinza">Monitorar</span></td></tr>
-        <tr><td>Receita mensal</td><td>R$ 45.000</td><td>R$ 95.000</td><td>R$ 110.000</td><td><span class="badge badge-cinza">Monitorar</span></td></tr>
+        <tr><td contenteditable="true" data-ek="kpi-com1a">Taxa de ocupacao das cotas</td><td contenteditable="true" data-ek="kpi-com1b">50%</td><td contenteditable="true" data-ek="kpi-com1c">80%</td><td contenteditable="true" data-ek="kpi-com1d">95%</td><td contenteditable="true" data-ek="kpi-com1e">Monitorar</td></tr>
+        <tr><td contenteditable="true" data-ek="kpi-com2a">Retencao de patrocinadores</td><td contenteditable="true" data-ek="kpi-com2b">80%</td><td contenteditable="true" data-ek="kpi-com2c">90%</td><td contenteditable="true" data-ek="kpi-com2d">95%</td><td contenteditable="true" data-ek="kpi-com2e">Monitorar</td></tr>
+        <tr><td contenteditable="true" data-ek="kpi-com3a">Receita mensal</td><td contenteditable="true" data-ek="kpi-com3b">R$ 45.000</td><td contenteditable="true" data-ek="kpi-com3c">R$ 95.000</td><td contenteditable="true" data-ek="kpi-com3d">R$ 110.000</td><td contenteditable="true" data-ek="kpi-com3e">Monitorar</td></tr>
       </tbody>
     </table>
   </div>
@@ -862,9 +868,9 @@ tfoot td { padding: 11px 14px; }
     <table>
       <thead><tr><th>Metrica</th><th>Mes 1</th><th>Mes 6</th><th>Ano 1</th><th>Status</th></tr></thead>
       <tbody>
-        <tr><td>Views YouTube</td><td>50.000</td><td>500.000</td><td>2.000.000</td><td><span class="badge badge-cinza">Monitorar</span></td></tr>
-        <tr><td>Seguidores Instagram</td><td>5.000</td><td>50.000</td><td>150.000</td><td><span class="badge badge-cinza">Monitorar</span></td></tr>
-        <tr><td>Leads capturados</td><td>500</td><td>5.000</td><td>20.000</td><td><span class="badge badge-cinza">Monitorar</span></td></tr>
+        <tr><td contenteditable="true" data-ek="kpi-dig1a">Views YouTube</td><td contenteditable="true" data-ek="kpi-dig1b">50.000</td><td contenteditable="true" data-ek="kpi-dig1c">500.000</td><td contenteditable="true" data-ek="kpi-dig1d">2.000.000</td><td contenteditable="true" data-ek="kpi-dig1e">Monitorar</td></tr>
+        <tr><td contenteditable="true" data-ek="kpi-dig2a">Seguidores Instagram</td><td contenteditable="true" data-ek="kpi-dig2b">5.000</td><td contenteditable="true" data-ek="kpi-dig2c">50.000</td><td contenteditable="true" data-ek="kpi-dig2d">150.000</td><td contenteditable="true" data-ek="kpi-dig2e">Monitorar</td></tr>
+        <tr><td contenteditable="true" data-ek="kpi-dig3a">Leads capturados</td><td contenteditable="true" data-ek="kpi-dig3b">500</td><td contenteditable="true" data-ek="kpi-dig3c">5.000</td><td contenteditable="true" data-ek="kpi-dig3d">20.000</td><td contenteditable="true" data-ek="kpi-dig3e">Monitorar</td></tr>
       </tbody>
     </table>
   </div>
@@ -872,19 +878,19 @@ tfoot td { padding: 11px 14px; }
   <h2>Progresso das Metas Prioritarias</h2>
   <div class="card">
     <div class="progress-wrap" style="margin-bottom:18px;">
-      <div class="progress-label"><span>Pipeline Comercial Fechado (meta: R$ 1.220.000/ano)</span><span id="kpi-pipeline-pct">0%</span></div>
+      <div class="progress-label"><span contenteditable="true" data-ek="kpi-bar1">Pipeline Comercial Fechado (meta: R$ 1.220.000/ano)</span><span id="kpi-pipeline-pct">0%</span></div>
       <div class="progress-bar"><div class="progress-fill" id="kpi-pipeline-bar" style="width:0%"></div></div>
     </div>
     <div class="progress-wrap" style="margin-bottom:18px;">
-      <div class="progress-label"><span>Marcos Concluidos (meta: 100%)</span><span id="kpi-marcos-pct">0%</span></div>
+      <div class="progress-label"><span contenteditable="true" data-ek="kpi-bar2">Marcos Concluidos (meta: 100%)</span><span id="kpi-marcos-pct">0%</span></div>
       <div class="progress-bar"><div class="progress-fill" id="kpi-marcos-bar" style="width:0%"></div></div>
     </div>
     <div class="progress-wrap" style="margin-bottom:18px;">
-      <div class="progress-label"><span>Equipe Contratada (meta: 7 cargos)</span><span id="kpi-equipe-pct">0%</span></div>
+      <div class="progress-label"><span contenteditable="true" data-ek="kpi-bar3">Equipe Contratada (meta: 7 cargos)</span><span id="kpi-equipe-pct">0%</span></div>
       <div class="progress-bar"><div class="progress-fill" id="kpi-equipe-bar" style="width:0%"></div></div>
     </div>
     <div class="progress-wrap">
-      <div class="progress-label"><span>Episodios Produzidos (meta: 52 no Ano 1)</span><span id="kpi-ep-pct">0%</span></div>
+      <div class="progress-label"><span contenteditable="true" data-ek="kpi-bar4">Episodios Produzidos (meta: 52 no Ano 1)</span><span id="kpi-ep-pct">0%</span></div>
       <div class="progress-bar"><div class="progress-fill" id="kpi-ep-bar" style="width:0%"></div></div>
     </div>
     <p style="font-size:12px;color:var(--cinza-texto);margin-top:16px;">As barras sao calculadas automaticamente com base nos dados das outras secoes.</p>
@@ -1258,7 +1264,7 @@ function renderSection(id) {
   if (id === 'configuracoes') renderConfig();
   if (id === 'business-plan') renderPricing();
   if (id === 'financeiro') renderFinanceiro();
-  setTimeout(() => initEditavel(id), 50);
+  setTimeout(() => { initEditavel(id); applyEkValues(id); }, 60);
 }
 
 // ═══════════════════════════════════════════
@@ -1939,7 +1945,10 @@ function salvarMetricas() {
   state.metricas.breakeven = Number(document.getElementById('cfg-breakeven').value);
   state.metricas.cotasDisponiveis = Number(document.getElementById('cfg-cotas').value);
   saveState('metricas');
-  showToast('Metricas salvas!');
+  renderFinanceiro();
+  renderDashboard();
+  renderKPIs();
+  showToast('Metricas salvas! Todos os paineis atualizados.');
 }
 
 function confirmarReset() {
@@ -2042,16 +2051,66 @@ function colValor(v) {
   return cor ? `style="color:${cor};"` : '';
 }
 
+function parseReais(str) {
+  if (!str) return 0;
+  const n = String(str).replace(/[^0-9,.-]/g,'').replace(/\./g,'').replace(',','.');
+  return parseFloat(n) || 0;
+}
+function formatReais(num) {
+  if (!num && num !== 0) return 'R$ 0';
+  const abs = Math.abs(num);
+  const formatted = abs.toLocaleString('pt-BR',{minimumFractionDigits:0,maximumFractionDigits:0});
+  return (num < 0 ? '-R$ ' : 'R$ ') + formatted;
+}
+
+function calcTotaisFinanceiro() {
+  const f = state.financeiro;
+  const totalReceita = f.receitaFontes.reduce((s,r) => s + parseReais(r.valor), 0);
+  const totalCusto   = f.custos.reduce((s,c) => s + parseReais(c.valor), 0);
+  const resultado    = totalReceita - totalCusto;
+
+  const elRV = document.getElementById('fin-receita-total-valor');
+  const elRP = document.getElementById('fin-receita-total-pct');
+  const elCV = document.getElementById('fin-custos-total-valor');
+  const elCP = document.getElementById('fin-custos-total-pct');
+  if (elRV) elRV.textContent = formatReais(totalReceita);
+  if (elRP) elRP.textContent = '100%';
+  if (elCV) elCV.textContent = formatReais(totalCusto);
+  if (elCP) elCP.textContent = '100%';
+
+  // Atualiza cards com valores de metricas
+  const m = state.metricas;
+  const cardVals = [
+    formatReais(m.receitaAnual),
+    formatReais(m.investimento),
+    formatReais(resultado > 0 ? resultado : m.receitaAnual - totalCusto),
+    'Mes ' + m.breakeven
+  ];
+  [0,1,2,3].forEach(i => {
+    const el = document.querySelector(`[data-fin="cards"][data-id="${i+1}"][data-field="value"]`);
+    if (el) { el.value = cardVals[i]; el.setAttribute('readonly', true); el.style.cursor='not-allowed'; el.style.background='var(--cinza-medio)'; }
+  });
+
+  return { totalReceita, totalCusto, resultado };
+}
+
 function renderFinanceiro() {
   const f = state.financeiro;
+  const m = state.metricas;
 
-  // Cards editaveis
-  document.getElementById('fin-cards').innerHTML = f.cards.map(c => `
+  // Cards: label/sub editaveis, value travado (vem de metricas)
+  const cardVals = [
+    formatReais(m.receitaAnual),
+    formatReais(m.investimento),
+    '—',
+    'Mes ' + m.breakeven
+  ];
+  document.getElementById('fin-cards').innerHTML = f.cards.map((c,i) => `
     <div class="card card-metric" data-fin-card="${c.id}">
       <div class="form-group" style="margin:0 0 6px;">
         <input class="editable-cell" value="${c.label}" oninput="markFinDirty()" data-fin="cards" data-id="${c.id}" data-field="label" style="font-size:11px;font-weight:600;color:var(--cinza-texto);text-transform:uppercase;letter-spacing:0.5px;" />
       </div>
-      <input class="editable-cell" value="${c.value}" oninput="markFinDirty()" data-fin="cards" data-id="${c.id}" data-field="value" style="font-family:'Playfair Display',serif;font-size:24px;font-weight:700;${c.color ? 'color:'+c.color+';' : 'color:var(--azul);'}" />
+      <input class="editable-cell calc-locked" value="${cardVals[i]||c.value}" readonly data-fin="cards" data-id="${c.id}" data-field="value" style="font-family:'Playfair Display',serif;font-size:24px;font-weight:700;cursor:not-allowed;${c.color ? 'color:'+c.color+';' : 'color:var(--azul);'}" title="Calculado automaticamente a partir das Configuracoes" />
       <input class="editable-cell" value="${c.sub}" oninput="markFinDirty()" data-fin="cards" data-id="${c.id}" data-field="sub" style="font-size:12px;color:var(--cinza-texto);margin-top:4px;" />
     </div>
   `).join('');
@@ -2060,9 +2119,9 @@ function renderFinanceiro() {
   document.getElementById('fin-grafico-card').innerHTML = `
     <h3>Visao Financeira Ano 1</h3>
     <div class="bar-chart">
-      <div class="bar-group"><div class="bar-value">${f.cards[0]?.value||''}</div><div class="bar bar-receita"></div><div class="bar-label">Receita</div></div>
-      <div class="bar-group"><div class="bar-value">${f.cards[1]?.value||''}</div><div class="bar bar-custo"></div><div class="bar-label">Custos</div></div>
-      <div class="bar-group"><div class="bar-value">${f.cards[2]?.value||''}</div><div class="bar bar-result"></div><div class="bar-label">Resultado</div></div>
+      <div class="bar-group"><div class="bar-value">${formatReais(m.receitaAnual)}</div><div class="bar bar-receita"></div><div class="bar-label">Receita</div></div>
+      <div class="bar-group"><div class="bar-value">${formatReais(m.investimento)}</div><div class="bar bar-custo"></div><div class="bar-label">Custos</div></div>
+      <div class="bar-group"><div class="bar-value">—</div><div class="bar bar-result"></div><div class="bar-label">Resultado</div></div>
     </div>
     <input class="editable-cell" value="${f.grafico}" oninput="markFinDirty()" data-fin="grafico" style="font-size:12px;color:var(--cinza-texto);margin-top:8px;width:100%;" />
   `;
@@ -2109,13 +2168,26 @@ function renderFinanceiro() {
   document.getElementById('fin-fluxo-tbody').innerHTML = f.fluxo.map(r => `
     <tr data-id="${r.id}">
       <td><input class="editable-cell" value="${r.mes}" oninput="markFinDirty()" data-fin="fluxo" data-id="${r.id}" data-field="mes" /></td>
-      <td><input class="editable-cell" value="${r.receita}" oninput="markFinDirty()" data-fin="fluxo" data-id="${r.id}" data-field="receita" /></td>
-      <td><input class="editable-cell" value="${r.custo}" oninput="markFinDirty()" data-fin="fluxo" data-id="${r.id}" data-field="custo" /></td>
-      <td ${colValor(r.resultado)}><input class="editable-cell" value="${r.resultado}" oninput="markFinDirty()" data-fin="fluxo" data-id="${r.id}" data-field="resultado" /></td>
-      <td ${colValor(r.saldo)}><input class="editable-cell" value="${r.saldo}" oninput="markFinDirty()" data-fin="fluxo" data-id="${r.id}" data-field="saldo" /></td>
+      <td><input class="editable-cell" value="${r.receita}" oninput="markFinDirty();calcFluxoLinha(this)" data-fin="fluxo" data-id="${r.id}" data-field="receita" /></td>
+      <td><input class="editable-cell" value="${r.custo}" oninput="markFinDirty();calcFluxoLinha(this)" data-fin="fluxo" data-id="${r.id}" data-field="custo" /></td>
+      <td ${colValor(r.resultado)}><span class="calc-locked" data-fluxo-res="${r.id}">${r.resultado}</span></td>
+      <td ${colValor(r.saldo)}><span class="calc-locked" data-fluxo-sal="${r.id}">${r.saldo}</span></td>
       <td><button class="btn-delete-small" onclick="deleteFinRow('fluxo',${r.id})" title="Excluir">&#128465;</button></td>
     </tr>
   `).join('');
+
+  setTimeout(calcTotaisFinanceiro, 10);
+}
+
+function calcFluxoLinha(inp) {
+  const tr = inp.closest('tr');
+  if (!tr) return;
+  const id = Number(tr.dataset.id);
+  const rec = parseReais(tr.querySelector('[data-field="receita"]')?.value);
+  const cus = parseReais(tr.querySelector('[data-field="custo"]')?.value);
+  const res = rec - cus;
+  const elRes = tr.querySelector('[data-fluxo-res]');
+  if (elRes) elRes.textContent = formatReais(res);
 }
 
 function markFinDirty() {
@@ -2144,8 +2216,7 @@ function saveFinanceiro() {
     const idx = f.receitaFontes.findIndex(r => r.id === id);
     if (idx >= 0) f.receitaFontes[idx][inp.dataset.field] = inp.value;
   });
-  f.receitaTotal.valor = document.getElementById('fin-receita-total-valor').value;
-  f.receitaTotal.pct   = document.getElementById('fin-receita-total-pct').value;
+  // totais calculados automaticamente — nao lidos de input
 
   // Custos
   document.querySelectorAll('[data-fin="custos"]').forEach(inp => {
@@ -2153,8 +2224,7 @@ function saveFinanceiro() {
     const idx = f.custos.findIndex(c => c.id === id);
     if (idx >= 0) f.custos[idx][inp.dataset.field] = inp.value;
   });
-  f.custosTotal.valor = document.getElementById('fin-custos-total-valor').value;
-  f.custosTotal.pct   = document.getElementById('fin-custos-total-pct').value;
+  // totais calculados automaticamente — nao lidos de input
 
   // Cenarios
   document.querySelectorAll('[data-fin="cenarios"]').forEach(inp => {
